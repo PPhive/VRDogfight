@@ -141,3 +141,4 @@ MonoBehaviour:
   timer: 0
   Particle: {fileID: 4419396761131677117, guid: 8bab8f00343df0647a125f975a2aef6c,
     type: 3}
+  MaxTime: 1

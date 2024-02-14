@@ -33,8 +33,14 @@ public class Bullet : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        SphereCastAdvance();
+    }
+
     void Disappear() 
     {
+        Explode();
         Destroy(this.gameObject);
     }
 
@@ -47,7 +53,6 @@ public class Bullet : MonoBehaviour
             if (MyScript != null)
             {
                 MyScript.Hit(MyProjectile.damage);
-                Instantiate(Explosion, transform.position, transform.rotation, other.transform);
 
                 //This should be transported to Unit system soon
                 if (MyScript.gameObject.GetComponent<LockOnAble>() != null && Owner.MyLockOnReciever != null && MyScript.gameObject.GetComponent<LockOnAble>().isActiveAndEnabled) 
@@ -84,14 +89,14 @@ public class Bullet : MonoBehaviour
             {
                 GetComponent<Collider>().enabled = false;
             }
-            Disappear();
         }
 
-        if (other.gameObject.tag != Owner.gameObject.tag)
+        if (other.gameObject.tag == Owner.gameObject.tag)
         {
             Debug.Log("Hitting target with same tag!");
+            transform.parent = other.transform;
         }
-        else if (other.gameObject.tag != "Bullet") 
+        else
         {
             Disappear();
         }
@@ -108,5 +113,35 @@ public class Bullet : MonoBehaviour
             return FindParentScript(other.parent);
         }
         return null;
+    }
+
+    //To prevent overpen, bullet uses this method to ensure a hit.
+    void SphereCastAdvance() 
+    {
+        RaycastHit Hit;
+        if (Physics.SphereCast(transform.position, 0.3f, transform.TransformDirection(Vector3.forward), out Hit, MyRb.velocity.magnitude * Time.fixedDeltaTime))
+        {
+            if (Hit.transform.gameObject.tag != "Bullet")
+            {
+                MyRb.velocity = MyRb.velocity.normalized;
+                transform.position += Hit.distance * transform.TransformDirection(Vector3.forward);
+                OnTriggerEnter(Hit.collider);
+                Debug.Log("Hitting " + Hit.transform.gameObject);
+            }
+        }
+    }
+
+    public void Explode() 
+    {
+        GameObject ThisExplosion = Instantiate(Explosion, transform.position, transform.rotation);
+        if (transform.parent != null) 
+        {
+            Transform Parent = transform.parent;
+            Vector3 MyLocalScale = ThisExplosion.transform.localScale;
+            Vector3 ParentScale = Parent.transform.lossyScale;
+            MyLocalScale = new Vector3(MyLocalScale.x / ParentScale.x, MyLocalScale.y / ParentScale.y, MyLocalScale.z / ParentScale.z);
+        }
+
+
     }
 }

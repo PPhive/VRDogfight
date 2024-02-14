@@ -5208,6 +5208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b1fc80d339207440ab53b7d5ce4b95c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Owner: {fileID: 0}
   Explosion: {fileID: 2150040323103579151, guid: 3484437c3c85b06459be5fa06185f9e7,
     type: 3}
   MyProjectile:

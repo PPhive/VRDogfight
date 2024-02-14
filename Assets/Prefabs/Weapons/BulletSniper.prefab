@@ -289,7 +289,7 @@ MonoBehaviour:
     damage: 50
     blastRadius: 0
     lifeTime: 2
-    initalforce: 2500
+    initalforce: 5000
     recoilX: 0
     recoilY: 0
   MyRb: {fileID: 8100592731115186898}
@@ -319,7 +319,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 50
+  m_Radius: 0.34
+  m_Height: 1
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 25}
+  m_Center: {x: 0, y: 0, z: 0.18}

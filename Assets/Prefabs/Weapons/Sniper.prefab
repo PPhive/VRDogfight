@@ -377,6 +377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 801f0a16c2f0b57458892333887c50cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FireButton: 113
   Owner: {fileID: 0}
   MyBullet: {fileID: 8100592731115186901, guid: b01462bc6e4add84295e0c979186c9a0,
     type: 3}
@@ -384,6 +385,7 @@ MonoBehaviour:
   BarrelOffset: {fileID: 2338382670904941566}
   GunBlaze: {fileID: 2338382670015560356}
   Spread: 0
+  Burst: 1
   CooldownMax: 1
   Cooldown: 0
 --- !u!1 &2338382670015560377

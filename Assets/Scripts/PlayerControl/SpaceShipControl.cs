@@ -60,6 +60,7 @@ public class SpaceShipControl : MonoBehaviour
         //Clamping to max speed
         turnspd = Mathf.Clamp(turnspd, -MaxTurnSpeed, MaxTurnSpeed) / 2;
 
+
         //Keyboard override
         if (Input.GetKey(KeyCode.D))
         {
@@ -70,22 +71,29 @@ public class SpaceShipControl : MonoBehaviour
             turnspd = -MaxTurnSpeed;
         }
 
+
+        //When plane is facing directly up and down, reduce turn speed;
+        float angle = Mathf.Asin(Mathf.Abs((transform.position + transform.up).y - transform.position.y)) / 3.1415f * 180f;
+        if (angle < 10)
+        {
+            turnspd *= angle / 10;
+        }
+
+        //Roll the plane according to yaw
+        MyModel.transform.localEulerAngles = -Vector3.forward * turnspd / 2;
+        //Roll the player object back to reduce motion sickness
+        MyCamera.transform.parent.transform.parent.transform.localEulerAngles = Vector3.forward * turnspd / 2;
+
         //If plane is upside down, reverse turn direction;
-        if ((transform.position + transform.up).y < transform.position.y) 
+        bool Upsidedown = (transform.position + transform.up).y < transform.position.y;
+        if (Upsidedown)
         {
             turnspd *= -1;
         }
 
-        //When plane is facing directly up and down, reduce turn speed;
-        float angle = Mathf.Asin(Mathf.Abs((transform.position + transform.up).y - transform.position.y)) / 3.1415f * 180f;
-        if (angle < 20)
-        {
-            turnspd *= angle / 20;
-        }
 
-        MyModel.transform.localEulerAngles = -Vector3.forward * turnspd / 2;
-        MyCamera.transform.parent.transform.parent.transform.localEulerAngles = Vector3.forward * turnspd;
 
+        //yall the plane according to turnspd
         transform.Rotate(Vector3.up * turnspd * Time.deltaTime, Space.World);
 
         //Roll

@@ -137,7 +137,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29e67c79a4f43fb4bb021daece5d17f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Small: 0
+  Small: 1
   timer: 0
   Particle: {fileID: 8485200408551899326, guid: 8ac7516e6254270458a78c02ec48c2fd,
     type: 3}
+  MaxTime: 1
