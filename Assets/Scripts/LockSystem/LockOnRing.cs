@@ -65,6 +65,10 @@ public class LockOnRing : MonoBehaviour
         if (Timer > 0) 
         {
             Timer -= Time.deltaTime;
+            if (TargetProgress >= 100)
+            {
+                transform.localScale = Vector3.forward + new Vector3(1,1,0) * (1 - Timer/2);
+            }
             CurrentProgress = Mathf.Lerp(TargetProgress - ProgressDifference, TargetProgress, ((TimerMax - Timer)/TimerMax) * ((TimerMax - Timer) / TimerMax));
             RingUpdate();
         }

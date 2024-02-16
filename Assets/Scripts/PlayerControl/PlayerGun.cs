@@ -22,11 +22,15 @@ public class PlayerGun : MonoBehaviour
     float Spread;
     [SerializeField]
     int Burst = 1;
+    [SerializeField]
+    float BurstCD = 0;
 
     [SerializeField]
     private float CooldownMax;
     [SerializeField]
     private float Cooldown;
+
+    private IEnumerator Coroutine;
 
     // Start is called before the first frame update
     void Start()
@@ -43,15 +47,15 @@ public class PlayerGun : MonoBehaviour
             float CrossProduct = Vector3.Cross(a - b, c - b).z;
             if (CrossProduct > 0)
             {
-                FireButton = KeyCode.E;
+                FireButton = KeyCode.Mouse1;
             }
             else if (CrossProduct < 0)
             {
-                FireButton = KeyCode.Q;
+                FireButton = KeyCode.Mouse0;
             }
             else
             {
-                FireButton = KeyCode.Space;
+                FireButton = KeyCode.Mouse2;
             }
         }
     }
@@ -67,7 +71,10 @@ public class PlayerGun : MonoBehaviour
         {
             if (Input.GetKey(FireButton))
             {
-                Fire();
+                for (int i = 0; i < Burst; i++)
+                {
+                    StartCoroutine(Fire(i * BurstCD));
+                }
                 Cooldown = CooldownMax;
             }
         }
@@ -75,10 +82,9 @@ public class PlayerGun : MonoBehaviour
         MuzzleRecoil();
     }
 
-    public void Fire() 
+    public IEnumerator Fire(float delay) 
     {
-        for (int i = 0; i < Burst; i++) 
-        {
+        yield return new WaitForSeconds(delay);
             MyMuzzle.transform.localEulerAngles = new Vector3(Random.Range(-Spread, Spread), Random.Range(-Spread, Spread), 0);
             GameObject SpawnedBullet = Instantiate(MyBullet, MyMuzzle.transform.position, MyMuzzle.transform.rotation);
             if (SpawnedBullet.GetComponent<Bullet>() != null)
@@ -88,7 +94,6 @@ public class PlayerGun : MonoBehaviour
             BarrelOffset.transform.localPosition = -Vector3.forward * 1;
             GunBlaze.Play();
             MySound.PlayOneShot(MySound.clip);
-        }
     }
 
     public void MuzzleRecoil() 

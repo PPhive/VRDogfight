@@ -6368,6 +6368,7 @@ MonoBehaviour:
   MySound: {fileID: -5727425948808650125}
   Spread: 3
   Burst: 4
+  BurstCD: 0.2
   CooldownMax: 10
   Cooldown: 0
 --- !u!82 &-5727425948808650125
