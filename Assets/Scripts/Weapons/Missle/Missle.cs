@@ -23,19 +23,19 @@ public class Missle : MonoBehaviour
         MyRigidBody = GetComponent<Rigidbody>();
         Bullet MyBullet = GetComponent<Bullet>();
         List<GameObject> PossibleTargets = new List<GameObject>();
-        if (MyBullet.Owner.MyLockOnReciever.List.Count > 0) 
+        if (MyBullet.Owner != null && MyBullet.Owner.MyLockOnReciever.List.Count > 0) 
         {
             foreach (LockOnTargets TargetClass in MyBullet.Owner.MyLockOnReciever.List)
             {
-                if (TargetClass.LockOnProgress > 100) 
+                if (TargetClass.LockOnProgress >= 100) 
                 {
                     PossibleTargets.Add(TargetClass.Target.gameObject);
                     Debug.Log("adding " + TargetClass.Target.gameObject + "to potential target. It's lock on progress is " + TargetClass.LockOnProgress);
                 }
             }
-            if(MyBullet.Owner.MyLockOnReciever.List.Count > 0)
+            if(PossibleTargets.Count > 0)
             {
-                Target = PossibleTargets[Random.Range(0, MyBullet.Owner.MyLockOnReciever.List.Count - 1)];
+                Target = PossibleTargets[Random.Range(0,PossibleTargets.Count)];
             } 
         }
         if (Target != null) 
@@ -46,7 +46,7 @@ public class Missle : MonoBehaviour
 
     void Update()
     {
-        if (FlightTimer <= 100000f)
+        if (FlightTimer <= 1000f)
         {
             if (Target != null)
             {
@@ -60,7 +60,7 @@ public class Missle : MonoBehaviour
                 TurnTimer -= Time.deltaTime;
                 if (TurnTimer <= 0)
                 {
-                    transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, TargetDirection, 3.1415f * 0.25f, 0));
+                    transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, TargetDirection, 3.1415f * 0.3f, 0));
 
                     //RandomizeTurn
                     Vector3 TurnRandomizer = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0);
@@ -69,7 +69,6 @@ public class Missle : MonoBehaviour
 
                     TurnTimer += Random.Range(0.2f, 1f);
                 }
-
                 TargetPastPos = Target.transform.position;
             }
         }

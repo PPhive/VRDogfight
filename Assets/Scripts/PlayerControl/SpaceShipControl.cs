@@ -41,11 +41,11 @@ public class SpaceShipControl : MonoBehaviour
         //Keyboard override
         if (Input.GetKey(KeyCode.W))
         {
-            turnspd = MaxTurnSpeed;
+            turnspd = MaxTurnSpeed/2;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            turnspd = -MaxTurnSpeed;
+            turnspd = -MaxTurnSpeed/2;
         }
         transform.Rotate(Vector3.right * Time.deltaTime * turnspd, Space.Self);
 
@@ -64,11 +64,11 @@ public class SpaceShipControl : MonoBehaviour
         //Keyboard override
         if (Input.GetKey(KeyCode.D))
         {
-            turnspd = MaxTurnSpeed;
+            turnspd = MaxTurnSpeed/2;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            turnspd = -MaxTurnSpeed;
+            turnspd = -MaxTurnSpeed/2;
         }
 
 

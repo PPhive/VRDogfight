@@ -48,7 +48,7 @@ public class Bullet : MonoBehaviour
     {
         if (other.gameObject.tag == "Enemy")
         {
-            Debug.Log("Hit Landed with " + gameObject + ". Dealing " + MyProjectile.damage);
+            //Debug.Log("Hit Landed with " + gameObject + ". Dealing " + MyProjectile.damage);
             EnemyBasic MyScript = FindParentScript(other.transform);
             if (MyScript != null)
             {
@@ -79,8 +79,8 @@ public class Bullet : MonoBehaviour
                     {
                         ThisTarget.List.Add(Owner.MyLockOnReciever);
                         Owner.MyLockOnReciever.List.Add(ThisTargetClass);
-                        Owner.MyLockOnReciever.AddLockOnProgress(ThisTargetClass, 34f);
                         Owner.MyLockOnReciever.CreateLockOnRing(ThisTargetClass);
+                        Owner.MyLockOnReciever.AddLockOnProgress(ThisTargetClass, 34f);
                     }
                 }
 
@@ -121,12 +121,12 @@ public class Bullet : MonoBehaviour
         RaycastHit Hit;
         if (Physics.SphereCast(transform.position, 0.3f, transform.TransformDirection(Vector3.forward), out Hit, MyRb.velocity.magnitude * Time.fixedDeltaTime))
         {
-            if (Hit.transform.gameObject.tag != "Bullet")
+            if (Hit.transform.gameObject.tag != "Bullet" && Hit.transform.gameObject.tag != Owner.gameObject.tag)
             {
                 MyRb.velocity = MyRb.velocity.normalized;
                 transform.position += Hit.distance * transform.TransformDirection(Vector3.forward);
-                OnTriggerEnter(Hit.collider);
                 Debug.Log("Hitting " + Hit.transform.gameObject);
+                OnTriggerEnter(Hit.collider);
             }
         }
     }
@@ -141,7 +141,5 @@ public class Bullet : MonoBehaviour
             Vector3 ParentScale = Parent.transform.lossyScale;
             MyLocalScale = new Vector3(MyLocalScale.x / ParentScale.x, MyLocalScale.y / ParentScale.y, MyLocalScale.z / ParentScale.z);
         }
-
-
     }
 }

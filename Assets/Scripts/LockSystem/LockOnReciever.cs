@@ -8,6 +8,7 @@ public class LockOnTargets
     public LockOnAble Target;
     public float LockOnProgress;
     public float Timer;
+    public LockOnRing MyRing;
 }
 
 public class LockOnReciever : MonoBehaviour
@@ -43,19 +44,22 @@ public class LockOnReciever : MonoBehaviour
         }
         foreach (LockOnTargets RemovingTarget in ToBeRemoved)
         {
+            Destroy(RemovingTarget.MyRing.gameObject);
             List.Remove(RemovingTarget);
         }
     }
 
     public void AddLockOnProgress(LockOnTargets TargetClass, float Progress) 
     {
-        TargetClass.LockOnProgress += Progress;
-        TargetClass.Timer = Progress;
+        TargetClass.LockOnProgress = Mathf.Clamp(TargetClass.LockOnProgress + Progress, 0, 100);
+        TargetClass.Timer = 10;
+        TargetClass.MyRing.AnimateProgressRing(TargetClass.LockOnProgress);
     }
 
     public void CreateLockOnRing(LockOnTargets TargetClass) 
     {
         GameObject NewRing = Instantiate(LockOnRing, Radar.transform);
-        NewRing.GetComponent<LockOnRing>().MyTargetClass = TargetClass;
+        TargetClass.MyRing = NewRing.GetComponent<LockOnRing>();
+        TargetClass.MyRing.MyTargetClass = TargetClass;
     }
 }
