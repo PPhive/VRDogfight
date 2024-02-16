@@ -17,6 +17,8 @@ public class PlayerGun : MonoBehaviour
     [SerializeField]
     ParticleSystem GunBlaze;
     [SerializeField]
+    AudioSource MySound;
+    [SerializeField]
     float Spread;
     [SerializeField]
     int Burst = 1;
@@ -85,6 +87,7 @@ public class PlayerGun : MonoBehaviour
             }
             BarrelOffset.transform.localPosition = -Vector3.forward * 1;
             GunBlaze.Play();
+            MySound.PlayOneShot(MySound.clip);
         }
     }
 

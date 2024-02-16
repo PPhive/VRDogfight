@@ -284,7 +284,7 @@ MonoBehaviour:
   Owner: {fileID: 9041336777822163547}
   Explosion: {fileID: 2150040323103579151, guid: 7f1279dda1d4d1b46bcbc6ddc21bd040,
     type: 3}
-  HitPoints: 50
+  HitPoints: 100
 --- !u!54 &7288546518438312763
 Rigidbody:
   m_ObjectHideFlags: 0

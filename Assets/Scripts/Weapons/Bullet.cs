@@ -6,9 +6,14 @@ public class Bullet : MonoBehaviour
 {
     public Unit Owner;
     public GameObject Explosion;
+    public GameObject ExplosionCrit;
+    public bool ExplodeOnTimeOut = false;
     public Projectile MyProjectile;
+    public int TargetIndex;
     public Rigidbody MyRb;
     private float Timer;
+    [SerializeField]
+    LockOnTargets ThisTargetClass;
 
     void Start()
     {
@@ -29,7 +34,7 @@ public class Bullet : MonoBehaviour
         }
         else 
         {
-            Disappear();
+            Destroy(gameObject);
         }
     }
 
@@ -40,6 +45,7 @@ public class Bullet : MonoBehaviour
 
     void Disappear() 
     {
+        Debug.Log("Hi");
         Explode();
         Destroy(this.gameObject);
     }
@@ -52,22 +58,23 @@ public class Bullet : MonoBehaviour
             EnemyBasic MyScript = FindParentScript(other.transform);
             if (MyScript != null)
             {
-                MyScript.Hit(MyProjectile.damage);
-
                 //This should be transported to Unit system soon
                 if (MyScript.gameObject.GetComponent<LockOnAble>() != null && Owner.MyLockOnReciever != null && MyScript.gameObject.GetComponent<LockOnAble>().isActiveAndEnabled) 
                 {
                     LockOnAble ThisTarget = MyScript.gameObject.GetComponent<LockOnAble>();
-
                     bool AlreadyLockedOn = false;
-                    LockOnTargets ThisTargetClass = new LockOnTargets();
                     ThisTargetClass.Target = ThisTarget;
-                    foreach (LockOnTargets ExistingTargets in Owner.MyLockOnReciever.List) 
+                    for (int i = 0; i < Owner.MyLockOnReciever.List.Count; i++) 
                     {
-                        if (ExistingTargets.Target == ThisTarget)
+
+                        if (Owner.MyLockOnReciever.List[i].Target == ThisTarget)
                         {
                             AlreadyLockedOn = true;
-                            ThisTargetClass = ExistingTargets;
+                            ThisTargetClass = Owner.MyLockOnReciever.List[i];
+                            if (ThisTargetClass.LockOnProgress >= 100) 
+                            {
+                                MyProjectile.damage *= 1.5f;
+                            }
                         }
                     }
 
@@ -83,7 +90,7 @@ public class Bullet : MonoBehaviour
                         Owner.MyLockOnReciever.AddLockOnProgress(ThisTargetClass, 34f);
                     }
                 }
-
+                MyScript.Hit(MyProjectile.damage);
             }
             if (GetComponent<Collider>() != null) 
             {
@@ -133,7 +140,15 @@ public class Bullet : MonoBehaviour
 
     public void Explode() 
     {
-        GameObject ThisExplosion = Instantiate(Explosion, transform.position, transform.rotation);
+        GameObject ThisExplosion;
+        if (ThisTargetClass.LockOnProgress >= 100)
+        {
+            ThisExplosion = Instantiate(ExplosionCrit, transform.position, transform.rotation);
+        }
+        else 
+        {
+            ThisExplosion = Instantiate(Explosion, transform.position, transform.rotation);
+        }
         if (transform.parent != null) 
         {
             Transform Parent = transform.parent;

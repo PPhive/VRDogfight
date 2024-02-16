@@ -81,6 +81,8 @@ public class SpaceShipControl : MonoBehaviour
 
         //Roll the plane according to yaw
         MyModel.transform.localEulerAngles = -Vector3.forward * turnspd / 2;
+        //Reseting plane roll incase of crash
+        transform.localEulerAngles -= new Vector3(0,0,transform.localEulerAngles.z);
         //Roll the player object back to reduce motion sickness
         MyCamera.transform.parent.transform.parent.transform.localEulerAngles = Vector3.forward * turnspd / 2;
 

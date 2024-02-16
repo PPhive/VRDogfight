@@ -23,7 +23,7 @@ public class SmokeParticle : MonoBehaviour
         Timer -= Time.deltaTime;
         if (Timer < Random.Range(1.5f, 2f) && !Exploded)
         {
-            if (Random.Range(0f, 1f) > 0.85f) 
+            if (Random.Range(0f, 1f) > 0.9f) 
             {
                 Instantiate(Explosion, transform.position, transform.rotation);
                 Destroy(gameObject);

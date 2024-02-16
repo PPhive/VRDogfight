@@ -66,8 +66,8 @@ public class LockOnRing : MonoBehaviour
         {
             Timer -= Time.deltaTime;
             CurrentProgress = Mathf.Lerp(TargetProgress - ProgressDifference, TargetProgress, ((TimerMax - Timer)/TimerMax) * ((TimerMax - Timer) / TimerMax));
+            RingUpdate();
         }
-        RingUpdate();
     }
 
     void RingUpdate() 

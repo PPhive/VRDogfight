@@ -22,6 +22,11 @@ public class LockOnReciever : MonoBehaviour
     [SerializeField]
     GameObject Radar;
 
+    [SerializeField]
+    AudioSource MySound;
+    [SerializeField]
+    AudioClip SoundBeep;
+
     void Start()
     {
         
@@ -52,8 +57,21 @@ public class LockOnReciever : MonoBehaviour
     public void AddLockOnProgress(LockOnTargets TargetClass, float Progress) 
     {
         TargetClass.LockOnProgress = Mathf.Clamp(TargetClass.LockOnProgress + Progress, 0, 100);
+        if (TargetClass.LockOnProgress < 100)
+        {
+            MySound.pitch = 1f;
+            MySound.volume = 0.1f;
+            MySound.PlayOneShot(SoundBeep);
+        }
+        else 
+        {
+            MySound.pitch = 1.7f;
+            MySound.volume = 0.2f;
+            MySound.PlayOneShot(SoundBeep);
+        }
         TargetClass.Timer = 10;
         TargetClass.MyRing.AnimateProgressRing(TargetClass.LockOnProgress);
+
     }
 
     public void CreateLockOnRing(LockOnTargets TargetClass) 
