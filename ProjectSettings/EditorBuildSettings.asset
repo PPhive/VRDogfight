@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/DogFight.unity
+    guid: 340b0afe17a7d4940a184e9946d95396
+  - enabled: 0
     path: Assets/Scenes/Projectile.unity
     guid: a6e8c7fb0d9bf6a42b23ecda78d366fd
   m_configObjects:

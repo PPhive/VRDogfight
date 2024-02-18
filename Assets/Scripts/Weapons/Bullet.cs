@@ -45,7 +45,6 @@ public class Bullet : MonoBehaviour
 
     void Disappear() 
     {
-        Debug.Log("Hi");
         Explode();
         Destroy(this.gameObject);
     }

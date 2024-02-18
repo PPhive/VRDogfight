@@ -79,12 +79,7 @@ public class SpaceShipControl : MonoBehaviour
             turnspd *= angle / 10;
         }
 
-        //Roll the plane according to yaw
-        MyModel.transform.localEulerAngles = -Vector3.forward * turnspd / 2;
-        //Reseting plane roll incase of crash
-        transform.localEulerAngles -= new Vector3(0,0,transform.localEulerAngles.z);
-        //Roll the player object back to reduce motion sickness
-        MyCamera.transform.parent.transform.parent.transform.localEulerAngles = Vector3.forward * turnspd / 2;
+
 
         //If plane is upside down, reverse turn direction;
         bool Upsidedown = (transform.position + transform.up).y < transform.position.y;
@@ -93,7 +88,25 @@ public class SpaceShipControl : MonoBehaviour
             turnspd *= -1;
         }
 
+        //Reseting plane roll incase of crash
+        float targetZ;
+        Vector3 Tempforward = transform.position + transform.forward;
+        if (Upsidedown)
+        {
+            targetZ = 180;
+        }
+        else 
+        {
+            targetZ = 0;
+        }
+        transform.LookAt(Tempforward);
+        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, targetZ);
 
+        //Roll the plane according to yaw
+        MyModel.transform.localEulerAngles = -Vector3.forward * turnspd;
+
+        //Roll the player object back to reduce motion sickness
+        MyCamera.transform.parent.transform.parent.transform.localEulerAngles = Vector3.forward * turnspd * 0.2f;
 
         //yall the plane according to turnspd
         transform.Rotate(Vector3.up * turnspd * Time.deltaTime, Space.World);
