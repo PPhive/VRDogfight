@@ -6323,6 +6323,7 @@ GameObject:
   - component: {fileID: 5588808143229749535}
   - component: {fileID: 5588808143229749534}
   - component: {fileID: -5727425948808650125}
+  - component: {fileID: 2228083764902055512}
   m_Layer: 0
   m_Name: MissleLauncher
   m_TagString: Player
@@ -6467,6 +6468,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!65 &2228083764902055512
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5588808143229749533}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3, y: 3, z: 13}
+  m_Center: {x: 0, y: 0, z: 3.13}
 --- !u!1 &5588808143549408791
 GameObject:
   m_ObjectHideFlags: 0
@@ -6697,7 +6711,7 @@ Transform:
   m_GameObject: {fileID: 5588808143787294643}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5588808142980218053}

@@ -36,8 +36,7 @@ public class LockOnReciever : MonoBehaviour
     {
         List<LockOnTargets> ToBeRemoved = new List<LockOnTargets>();
         foreach (LockOnTargets Locked in List) 
-        {
-            
+        {     
             if (Locked.Timer <= 0)
             {
                 ToBeRemoved.Add(Locked);
@@ -60,13 +59,13 @@ public class LockOnReciever : MonoBehaviour
         if (TargetClass.LockOnProgress < 100)
         {
             MySound.pitch = 1f;
-            MySound.volume = 0.1f;
+            MySound.volume = 0.07f;
             MySound.PlayOneShot(SoundBeep);
         }
         else 
         {
             MySound.pitch = 1.7f;
-            MySound.volume = 0.2f;
+            MySound.volume = 0.1f;
             MySound.PlayOneShot(SoundBeep);
         }
         TargetClass.Timer = 10;

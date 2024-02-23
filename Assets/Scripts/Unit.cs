@@ -11,6 +11,8 @@ public class Unit : MonoBehaviour
         Returning,
     }
 
+    public state mystate;
+
     [SerializeField]
     public HP myHP;
     [SerializeField]
@@ -39,23 +41,27 @@ public class Unit : MonoBehaviour
         }
 
         SetAllChildTag(transform);
+        mystate = state.Controlled;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (myRb != null) 
+        if (mystate == state.Controlled) 
         {
-            if (myRb.velocity != velocity) 
+            if (myRb != null)
             {
-                if ((velocity - myRb.velocity).magnitude > accel * Time.deltaTime)
+                if (myRb.velocity != velocity)
                 {
-                    myRb.velocity = myRb.velocity + (velocity - myRb.velocity).normalized * accel * Time.deltaTime;
-                    Debug.Log("accelerating");
-                }
-                else 
-                {
-                    myRb.velocity = velocity;
+                    if ((velocity - myRb.velocity).magnitude > accel * Time.deltaTime)
+                    {
+                        myRb.velocity = myRb.velocity + (velocity - myRb.velocity).normalized * accel * Time.deltaTime;
+                        Debug.Log("accelerating");
+                    }
+                    else
+                    {
+                        myRb.velocity = velocity;
+                    }
                 }
             }
         }

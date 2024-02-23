@@ -87,6 +87,7 @@ public class PlayerGun : MonoBehaviour
         yield return new WaitForSeconds(delay);
             MyMuzzle.transform.localEulerAngles = new Vector3(Random.Range(-Spread, Spread), Random.Range(-Spread, Spread), 0);
             GameObject SpawnedBullet = Instantiate(MyBullet, MyMuzzle.transform.position, MyMuzzle.transform.rotation);
+            SpawnedBullet.tag = tag;
             if (SpawnedBullet.GetComponent<Bullet>() != null)
             {
                 SpawnedBullet.GetComponent<Bullet>().Owner = Owner;

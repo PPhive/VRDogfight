@@ -107,10 +107,10 @@ public class Bullet : MonoBehaviour
         if (other.gameObject.tag == Owner.gameObject.tag)
         {
             Debug.Log("Hitting target with same tag!");
-            transform.parent = other.transform;
         }
         else
         {
+            Debug.Log(other.gameObject);
             Disappear();
         }
     }

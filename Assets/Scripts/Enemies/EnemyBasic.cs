@@ -62,5 +62,4 @@ public class EnemyBasic : MonoBehaviour
     {
         transform.Rotate(new Vector3(DriftSpeed.x * Mathf.Sin(Time.realtimeSinceStartup), DriftSpeed.y * Mathf.Sin(Time.realtimeSinceStartup), DriftSpeed.z * Mathf.Sin(Time.realtimeSinceStartup)) * Time.deltaTime, Space.Self);
     }
-
 }

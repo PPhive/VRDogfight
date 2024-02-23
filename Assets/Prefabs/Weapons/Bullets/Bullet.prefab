@@ -74,10 +74,10 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.05
+  m_Time: 0.1
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1.5
+    widthMultiplier: 2
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -146,7 +146,7 @@ TrailRenderer:
     textureMode: 0
     shadowBias: 0.5
     generateLightingData: 0
-  m_MinVertexDistance: 10
+  m_MinVertexDistance: 50
   m_Autodestruct: 0
   m_Emitting: 1
 --- !u!1 &6577924086211184708
@@ -291,10 +291,11 @@ MonoBehaviour:
     size: 5
     damage: 10
     blastRadius: 0
-    lifeTime: 2
+    lifeTime: 1
     initalforce: 1500
     recoilX: 0
     recoilY: 0
+  LockOnDamage: 34
   TargetIndex: 0
   MyRb: {fileID: 0}
   ThisTargetClass:

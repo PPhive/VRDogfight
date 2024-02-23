@@ -142,7 +142,7 @@ Transform:
   m_GameObject: {fileID: 7267194644415942005}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7267194644003204953}
@@ -449,6 +449,7 @@ GameObject:
   - component: {fileID: 7267194645007694809}
   - component: {fileID: 7267194645007694808}
   - component: {fileID: 7666780978474951273}
+  - component: {fileID: 6420039343327543777}
   m_Layer: 0
   m_Name: Gun
   m_TagString: Untagged
@@ -495,7 +496,7 @@ MonoBehaviour:
   Spread: 0.5
   Burst: 1
   BurstCD: 0
-  CooldownMax: 0.2
+  CooldownMax: 0.1
   Cooldown: 0
 --- !u!82 &7666780978474951273
 AudioSource:
@@ -509,7 +510,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 132a0ad141cd4a2429966e09fa874bb4, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -593,6 +594,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!65 &6420039343327543777
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7267194645007694811}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2, y: 2, z: 13}
+  m_Center: {x: 0, y: 0, z: 2.5}
 --- !u!1 &7267194645227867679
 GameObject:
   m_ObjectHideFlags: 0
@@ -699,7 +713,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 1
+  moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
