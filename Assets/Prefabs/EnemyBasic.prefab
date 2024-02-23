@@ -246,6 +246,7 @@ GameObject:
   - component: {fileID: 7288546518438312764}
   - component: {fileID: 9041336777822163547}
   - component: {fileID: 3403089563730553261}
+  - component: {fileID: 7183588561688045635}
   m_Layer: 0
   m_Name: EnemyBasic
   m_TagString: Enemy
@@ -262,7 +263,7 @@ Transform:
   m_GameObject: {fileID: 7288546518438312765}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 4.9}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7288546519054470160}
@@ -313,11 +314,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e7939763faf6eb40b66f5a2f83f8c85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MyUnit: {fileID: 0}
+  MyUnit: {fileID: 9041336777822163547}
   MyRB: {fileID: 7288546518438312763}
   MyHP: {fileID: 7288546518438312762}
   MyShaker: {fileID: 7288546519054470161}
-  ShakeTimer: 0
+  LeftOrRight: 0
   DriftSpeed: {x: 0, y: 0, z: 0}
 --- !u!114 &9041336777822163547
 MonoBehaviour:
@@ -331,8 +332,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39d6c26c675c4c84bbed0bc83efa5c82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MyHP: {fileID: 7288546518438312762}
-  MyLockOnReciever: {fileID: 0}
+  myHP: {fileID: 0}
+  myLockOnReciever: {fileID: 0}
+  myRb: {fileID: 0}
+  myShaker: {fileID: 0}
+  accel: 150
+  velocity: {x: 0, y: 0, z: 0}
 --- !u!114 &3403089563730553261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -346,6 +351,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   List: []
+--- !u!114 &7183588561688045635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7288546518438312765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4277b94214d33940a99111c6a458068, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyModel: {fileID: 7288546519054470161}
+  MyEulers: {x: 0, y: 0, z: 0}
+  MyInertia: {x: 0, y: 0, z: 0}
+  Spring: 50
+  Decay: 10
 --- !u!1 &7288546519054470161
 GameObject:
   m_ObjectHideFlags: 0
@@ -373,7 +395,7 @@ Transform:
   m_GameObject: {fileID: 7288546519054470161}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 5.93}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1220312553510899292}

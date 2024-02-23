@@ -7,6 +7,10 @@ TagManager:
   - WeaponParts
   - Bullet
   - Enemy
+  - TeamA
+  - TeamB
+  - TeamC
+  - TeamD
   layers:
   - Default
   - TransparentFX

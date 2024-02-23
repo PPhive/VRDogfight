@@ -74,7 +74,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.1
+  m_Time: 0.05
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1.5
@@ -292,15 +292,16 @@ MonoBehaviour:
     damage: 10
     blastRadius: 0
     lifeTime: 2
-    initalforce: 1000
+    initalforce: 1500
     recoilX: 0
     recoilY: 0
-  MyTarget:
+  TargetIndex: 0
+  MyRb: {fileID: 0}
+  ThisTargetClass:
     Target: {fileID: 0}
     LockOnProgress: 0
     Timer: 0
     MyRing: {fileID: 0}
-  MyRb: {fileID: 0}
 --- !u!136 &6473073515743050444
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -6,8 +6,6 @@ public class Missle : MonoBehaviour
 {
     [SerializeField]
     private Rigidbody MyRigidBody;
-    private Transform Probe;
-
     public GameObject Target;
     private Vector3 TargetPastPos;
     private Vector3 TargetDirection;
@@ -23,14 +21,13 @@ public class Missle : MonoBehaviour
         MyRigidBody = GetComponent<Rigidbody>();
         Bullet MyBullet = GetComponent<Bullet>();
         List<GameObject> PossibleTargets = new List<GameObject>();
-        if (MyBullet.Owner != null && MyBullet.Owner.MyLockOnReciever.List.Count > 0) 
+        if (MyBullet.Owner != null && MyBullet.Owner.myLockOnReciever.List.Count > 0) 
         {
-            foreach (LockOnTargets TargetClass in MyBullet.Owner.MyLockOnReciever.List)
+            foreach (LockOnTargets TargetClass in MyBullet.Owner.myLockOnReciever.List)
             {
                 if (TargetClass.LockOnProgress >= 100) 
                 {
                     PossibleTargets.Add(TargetClass.Target.gameObject);
-                    Debug.Log("adding " + TargetClass.Target.gameObject + "to potential target. It's lock on progress is " + TargetClass.LockOnProgress);
                 }
             }
             if(PossibleTargets.Count > 0)
@@ -46,35 +43,26 @@ public class Missle : MonoBehaviour
 
     void Update()
     {
-        if (FlightTimer <= 1000f)
+        if (Target != null)
         {
-            if (Target != null)
+            //Find the spot to hit by estimate target's velocity;
+            Vector3 TargetVelocity = (Target.transform.position - TargetPastPos) / Time.deltaTime;
+
+            float Distance = Vector3.Distance(Target.transform.position, transform.position);
+            TargetDirection = Target.transform.position - transform.position + TargetVelocity * 0f;
+            TurnTimer -= Time.deltaTime;
+            if (TurnTimer <= 0)
             {
-                //Find the spot to hit by estimate target's velocity;
-                Vector3 TargetVelocity = (Target.transform.position - TargetPastPos) / Time.deltaTime;
+                transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, TargetDirection, 3.1415f * 0.2f, 0));
 
-                float Distance = Vector3.Distance(Target.transform.position, transform.position);
-                TargetDirection = Target.transform.position - transform.position + TargetVelocity * 0.6f; //Make this multiplier the mean of the randomizer at the bottom
-                //transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, TargetDirection, 3.1415f * 0.15f * Time.fixedDeltaTime, 0));
+                //RandomizeTurn
+                Vector3 TurnRandomizer = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0);
+                TurnRandomizer *= Mathf.Clamp(Distance / 200, 5, 30);
+                transform.Rotate(TurnRandomizer, Space.Self);
 
-                TurnTimer -= Time.deltaTime;
-                if (TurnTimer <= 0)
-                {
-                    transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, TargetDirection, 3.1415f * 0.3f, 0));
-
-                    //RandomizeTurn
-                    Vector3 TurnRandomizer = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0);
-                    TurnRandomizer *= Mathf.Clamp(Distance / 200, 0, 90);
-                    transform.Rotate(TurnRandomizer, Space.Self);
-
-                    TurnTimer += Random.Range(0.2f, 1f);
-                }
-                TargetPastPos = Target.transform.position;
+                TurnTimer += Random.Range(0.1f, 0.6f);
             }
-        }
-        else
-        {
-            //Destroy(gameObject);
+            TargetPastPos = Target.transform.position;
         }
         MyRigidBody.velocity = transform.forward * Speed;
         FlightTimer += Time.fixedDeltaTime;

@@ -495,7 +495,7 @@ MonoBehaviour:
   Spread: 0.5
   Burst: 1
   BurstCD: 0
-  CooldownMax: 0.33
+  CooldownMax: 0.2
   Cooldown: 0
 --- !u!82 &7666780978474951273
 AudioSource:

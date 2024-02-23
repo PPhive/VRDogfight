@@ -12,15 +12,16 @@ public class EnemyBasic : MonoBehaviour
     private HP MyHP;
     [SerializeField]
     private GameObject MyShaker;
-    [SerializeField]
-    float ShakeTimer;
 
+    [SerializeField]
+    bool LeftOrRight;
     [SerializeField]
     Vector3 DriftSpeed;
 
     void Start()
     {
-        DriftSpeed = new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), Random.Range(-5f, 5f));
+        DriftSpeed = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), Random.Range(-10f, 10f));
+        LeftOrRight = (Random.Range(0,1) > 0);
     }
 
     void Update()
@@ -28,7 +29,6 @@ public class EnemyBasic : MonoBehaviour
         //transform.Rotate(new Vector3(10, 10, 10) * Time.deltaTime);
         OrganicDrift();
         Roomba();
-        Shake();
         if (Vector3.Distance(transform.position, new Vector3()) > 3000)
         {
             transform.LookAt(new Vector3(Random.Range(-1,1f), Random.Range(-1, 1f), Random.Range(-1, 1f)) * 1000f);
@@ -38,22 +38,7 @@ public class EnemyBasic : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        MyRB.velocity = transform.forward * 90;
-    }
-
-    public void Hit(float Damage)
-    {
-        MyHP.TakeDamage(Damage);
-        ShakeTimer = Random.Range(0.08f, 0.1f) * Damage;
-    }
-
-    private void Shake() 
-    {
-        if (ShakeTimer > 0) 
-        {
-            MyShaker.transform.localEulerAngles = new Vector3(ShakeTimer * 10 * Mathf.Sin(ShakeTimer * 7f), ShakeTimer * 20 * Mathf.Sin(ShakeTimer * 10f) * Time.deltaTime, 0);
-            ShakeTimer -= Time.deltaTime;
-        }
+        MyUnit.velocity = transform.forward * 140;
     }
 
     private void Roomba() 
@@ -63,7 +48,12 @@ public class EnemyBasic : MonoBehaviour
         {
             if (Hit.transform.gameObject.tag != "Bullet") 
             {
-                transform.Rotate(new Vector3(0, 10, 0) * Time.deltaTime * (300 / Hit.distance));
+                float direction = 1f;
+                if (LeftOrRight) 
+                {
+                    direction = -1f;
+                }
+                transform.Rotate(new Vector3(0, 10, 0) * Time.deltaTime * (300 / Hit.distance) * direction);
             }
         }
     }

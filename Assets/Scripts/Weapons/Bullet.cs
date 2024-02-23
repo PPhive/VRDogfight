@@ -9,6 +9,8 @@ public class Bullet : MonoBehaviour
     public GameObject ExplosionCrit;
     public bool ExplodeOnTimeOut = false;
     public Projectile MyProjectile;
+    [SerializeField]
+    private float LockOnDamage = 34;
     public int TargetIndex;
     public Rigidbody MyRb;
     private float Timer;
@@ -23,6 +25,7 @@ public class Bullet : MonoBehaviour
         MyRb.mass = MyProjectile.mass;
         MyRb.AddForce(transform.forward * MyProjectile.initalforce, ForceMode.Impulse);
         Timer = MyProjectile.lifeTime;
+        SphereCastAdvance();
     }
 
     void Update()
@@ -51,25 +54,24 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Enemy")
+        if (other.gameObject.tag != tag && other. gameObject.tag != "default")
         {
             //Debug.Log("Hit Landed with " + gameObject + ". Dealing " + MyProjectile.damage);
-            EnemyBasic MyScript = FindParentScript(other.transform);
-            if (MyScript != null)
+            Unit TargetUnit = FindParentScript(other.transform);
+            if (TargetUnit != null)
             {
                 //This should be transported to Unit system soon
-                if (MyScript.gameObject.GetComponent<LockOnAble>() != null && Owner.MyLockOnReciever != null && MyScript.gameObject.GetComponent<LockOnAble>().isActiveAndEnabled) 
+                if (TargetUnit.gameObject.GetComponent<LockOnAble>() != null && Owner.myLockOnReciever != null && TargetUnit.gameObject.GetComponent<LockOnAble>().isActiveAndEnabled) 
                 {
-                    LockOnAble ThisTarget = MyScript.gameObject.GetComponent<LockOnAble>();
+                    LockOnAble ThisTarget = TargetUnit.gameObject.GetComponent<LockOnAble>();
                     bool AlreadyLockedOn = false;
                     ThisTargetClass.Target = ThisTarget;
-                    for (int i = 0; i < Owner.MyLockOnReciever.List.Count; i++) 
+                    for (int i = 0; i < Owner.myLockOnReciever.List.Count; i++) 
                     {
-
-                        if (Owner.MyLockOnReciever.List[i].Target == ThisTarget)
+                        if (Owner.myLockOnReciever.List[i].Target == ThisTarget)
                         {
                             AlreadyLockedOn = true;
-                            ThisTargetClass = Owner.MyLockOnReciever.List[i];
+                            ThisTargetClass = Owner.myLockOnReciever.List[i];
                             if (ThisTargetClass.LockOnProgress >= 100) 
                             {
                                 MyProjectile.damage *= 1.5f;
@@ -79,17 +81,22 @@ public class Bullet : MonoBehaviour
 
                     if (AlreadyLockedOn)
                     {
-                        Owner.MyLockOnReciever.AddLockOnProgress(ThisTargetClass, 34f);
+                        Owner.myLockOnReciever.AddLockOnProgress(ThisTargetClass, LockOnDamage);
                     }
                     else
                     {
-                        ThisTarget.List.Add(Owner.MyLockOnReciever);
-                        Owner.MyLockOnReciever.List.Add(ThisTargetClass);
-                        Owner.MyLockOnReciever.CreateLockOnRing(ThisTargetClass);
-                        Owner.MyLockOnReciever.AddLockOnProgress(ThisTargetClass, 34f);
+                        ThisTarget.List.Add(Owner.myLockOnReciever);
+                        Owner.myLockOnReciever.List.Add(ThisTargetClass);
+                        Owner.myLockOnReciever.CreateLockOnRing(ThisTargetClass);
+                        Owner.myLockOnReciever.AddLockOnProgress(ThisTargetClass, LockOnDamage);
                     }
                 }
-                MyScript.Hit(MyProjectile.damage);
+                TargetUnit.Hit(MyProjectile.damage);
+                if (TargetUnit.GetComponent<ModelShaker>() != null)
+                {
+                    TargetUnit.GetComponent<ModelShaker>().AddInertia(transform.position, MyRb.velocity.normalized * MyProjectile.damage * 1.5f);
+                    Debug.Log("tried to shake!");
+                }
             }
             if (GetComponent<Collider>() != null) 
             {
@@ -108,11 +115,11 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    EnemyBasic FindParentScript(Transform other) 
+    Unit FindParentScript(Transform other) 
     {
-        if (other.GetComponent<EnemyBasic>() != null)
+        if (other.GetComponent<Unit>() != null)
         {
-            return other.GetComponent<EnemyBasic>();
+            return other.GetComponent<Unit>();
         }
         else if (other.transform.parent != null)
         {
