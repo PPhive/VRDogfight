@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 6645407849748517133}
   m_Layer: 0
   m_Name: GlowCube
-  m_TagString: Untagged
+  m_TagString: Terrain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -149,7 +149,7 @@ MonoBehaviour:
   CubeX: {fileID: 468340912730491772}
   CubeY: {fileID: 8167629217671885092}
   CubeZ: {fileID: 8850759323099414941}
-  EdgeWidth: 0.5
+  EdgeWidth: 0.1
 --- !u!1 &6645407848662133066
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,8 +19,7 @@ public class LockOnReciever : MonoBehaviour
     [SerializeField]
     GameObject LockOnRing;
 
-    [SerializeField]
-    GameObject Radar;
+    public GameObject Radar;
 
     [SerializeField]
     AudioSource MySound;

@@ -4,10 +4,38 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [System.Serializable]
+    public class Game 
+    {
+        public GameMode myGameMode;
+        public List<Team> teams;
+        public float MaxTimeMin;
+        public float TimerMin;
+        public float TimerSec;
+    }
+
+    [System.Serializable]
+    public class Team 
+    {
+        public string name;
+        public List<Player> myPlayers;
+        public int score;
+    }
+
+    [System.Serializable]
+    public enum GameMode 
+    {
+        Defense,
+        TeamDeathMatch
+    }
+
+    public Game DefaultGame;
+
     public static GameManager instance;
     int Seed;
 
-    public List<Unit> Players;
+    public List<Player> Players;
+    public float WorldRadius = 3000;
 
     void Awake()
     {
@@ -21,14 +49,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void Initialize() 
+    void Initialize(Game ThisGame) 
     {
         Seed = GenerateSeed();
     }
 
     void Start()
     {
-        Initialize();
+        Initialize(DefaultGame);
+
+        //The following game initialization is temporary;
+        
     }
 
     void Update()

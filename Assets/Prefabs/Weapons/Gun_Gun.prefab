@@ -451,7 +451,7 @@ GameObject:
   - component: {fileID: 7666780978474951273}
   - component: {fileID: 6420039343327543777}
   m_Layer: 0
-  m_Name: Gun
+  m_Name: Gun_Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -485,6 +485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 801f0a16c2f0b57458892333887c50cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MySlot: 0
   FireButton: 113
   Owner: {fileID: 0}
   MyBullet: {fileID: 8100592731115186901, guid: a865511beb3aaa64890da59da27b98fb,
@@ -722,9 +723,9 @@ ParticleSystem:
     enabled: 1
     startLifetime:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 0.2
-      minScalar: 5
+      minMaxState: 3
+      scalar: 0.33
+      minScalar: 0.3
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -776,8 +777,8 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 500
-      minScalar: 100
+      scalar: 40
+      minScalar: 0
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -892,8 +893,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 1
-      minScalar: 0.5
+      scalar: 0.2
+      minScalar: 0.05
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1269,7 +1270,7 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 4
-    angle: 3
+    angle: 2
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
@@ -1355,7 +1356,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.2
+      value: 0.01
       mode: 0
       spread: 0
       speed:
@@ -2164,7 +2165,7 @@ ParticleSystem:
     x:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -2217,7 +2218,7 @@ ParticleSystem:
     y:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -2270,7 +2271,7 @@ ParticleSystem:
     z:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0
       minScalar: 0
       maxCurve:
         serializedVersion: 2

@@ -12,12 +12,11 @@ public class CubeSpawner : MonoBehaviour
     GameObject CubeIsland;
     [SerializeField]
     GameObject EnemyBasic;
-    public int ChunkSize = 20;
-    public int RenderChunkDistance = 20;
+    public int ChunkSize = 30;
     private Vector2 PlayerChunk;
     void Start()
     {
-        SpawnCubes();
+        SpawnCubes(GameManager.instance.WorldRadius);
     }
 
     // Update is called once per frame
@@ -26,18 +25,19 @@ public class CubeSpawner : MonoBehaviour
         
     }
 
-    void SpawnCubes()
+    void SpawnCubes(float radius)
     {
+        int RadiusbyChunk =  (int)(radius / ChunkSize);
         Vector3 SpawnerNode;
-        for (int x = -50; x < 50; x++) 
+        for (int x = -RadiusbyChunk; x < RadiusbyChunk; x++) 
         {
-            for (int z = -50; z < 50; z++) 
+            for (int z = -RadiusbyChunk; z < RadiusbyChunk; z++) 
             {
-                if (!((x > -2 && x < 2) || (z > -2 && z < 2))) 
+                if (!(new Vector2(x * ChunkSize, z * ChunkSize).magnitude < radius * 0.3f || new Vector2(x * ChunkSize, z * ChunkSize).magnitude > radius)) 
                 {
-                    SpawnerNode = new Vector3(x, Random.Range(-10f, 10f), z) * 50;
+                    SpawnerNode = new Vector3(x, Random.Range(-20f, 20f), z) * ChunkSize;
                     //what's in this chunk
-                    if (Random.Range(0f, 1.0f) > 0.98f)
+                    if (Random.Range(0f, 1.0f) > 0.97f)
                     {
                         Instantiate(CubeIsland, SpawnerNode, transform.rotation, transform);
                     }

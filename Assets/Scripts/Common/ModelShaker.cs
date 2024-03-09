@@ -43,6 +43,7 @@ public class ModelShaker : MonoBehaviour
     public void AddInertia(Vector3 Position, Vector3 Strength) 
     {
         Vector3 CrossProduct = Vector3.Cross(Position - transform.position, Strength);
+        CrossProduct = Mathf.Clamp(CrossProduct.magnitude, 0, 300) * CrossProduct.normalized;
         MyInertia += CrossProduct;
     }
 }

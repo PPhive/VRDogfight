@@ -11,6 +11,7 @@ TagManager:
   - TeamB
   - TeamC
   - TeamD
+  - Terrain
   layers:
   - Default
   - TransparentFX

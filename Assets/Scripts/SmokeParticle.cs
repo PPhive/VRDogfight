@@ -10,7 +10,7 @@ public class SmokeParticle : MonoBehaviour
     [SerializeField]
     private float Timer = 1;
     private float Fall = 0;
-    private float Burst = 40;
+    private float Burst = 2;
     void Start()
     {
         transform.rotation = Random.rotation;
@@ -35,8 +35,8 @@ public class SmokeParticle : MonoBehaviour
             Destroy(gameObject);
         }
 
-        Fall += 20f * Time.deltaTime;
-        Burst -= 20f * Time.deltaTime;
+        Fall += 1f * Time.deltaTime;
+        Burst -= 1f * Time.deltaTime;
         transform.position += transform.forward * Burst * Time.deltaTime;
         transform.position -= new Vector3(0, Time.deltaTime * Fall, 0);
     }

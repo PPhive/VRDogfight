@@ -5,6 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public Unit Owner;
+
     public GameObject Explosion;
     public GameObject ExplosionCrit;
     public bool ExplodeOnTimeOut = false;
@@ -19,6 +20,7 @@ public class Bullet : MonoBehaviour
 
     void Start()
     {
+        tag = Owner.tag;
         transform.localScale = new Vector3(1,1,1) * MyProjectile.size;
         MyRb = GetComponent<Rigidbody>();
 
@@ -35,7 +37,7 @@ public class Bullet : MonoBehaviour
         {
             Timer -= Time.deltaTime;
         }
-        else 
+        else
         {
             Destroy(gameObject);
         }
@@ -54,13 +56,17 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.tag == tag) 
+        {
+            Debug.Log("hitting self");
+        }
+
         if (other.gameObject.tag != tag && other. gameObject.tag != "default")
         {
             //Debug.Log("Hit Landed with " + gameObject + ". Dealing " + MyProjectile.damage);
             Unit TargetUnit = FindParentScript(other.transform);
             if (TargetUnit != null)
             {
-                //This should be transported to Unit system soon
                 if (TargetUnit.gameObject.GetComponent<LockOnAble>() != null && Owner.myLockOnReciever != null && TargetUnit.gameObject.GetComponent<LockOnAble>().isActiveAndEnabled) 
                 {
                     LockOnAble ThisTarget = TargetUnit.gameObject.GetComponent<LockOnAble>();
@@ -106,7 +112,7 @@ public class Bullet : MonoBehaviour
 
         if (other.gameObject.tag == Owner.gameObject.tag)
         {
-            Debug.Log("Hitting target with same tag!");
+
         }
         else
         {
@@ -131,15 +137,29 @@ public class Bullet : MonoBehaviour
     //To prevent overpen, bullet uses this method to ensure a hit.
     void SphereCastAdvance() 
     {
-        RaycastHit Hit;
-        if (Physics.SphereCast(transform.position, 0.3f, transform.TransformDirection(Vector3.forward), out Hit, MyRb.velocity.magnitude * Time.fixedDeltaTime))
+        RaycastHit[] HitsArray = Physics.SphereCastAll(transform.position, transform.lossyScale.magnitude, transform.TransformDirection(Vector3.forward), MyRb.velocity.magnitude * Time.fixedDeltaTime);
+        if (HitsArray.Length > 0)
         {
-            if (Hit.transform.gameObject.tag != "Bullet" && Hit.transform.gameObject.tag != Owner.gameObject.tag)
+            //covert raycast hit array into list to use the builtin sorting for lists.
+            List<RaycastHit> Hits = new List<RaycastHit>();
+            for (int i = 0; i < HitsArray.Length; i++)
             {
-                MyRb.velocity = MyRb.velocity.normalized;
-                transform.position += Hit.distance * transform.TransformDirection(Vector3.forward);
-                Debug.Log("Hitting " + Hit.transform.gameObject);
-                OnTriggerEnter(Hit.collider);
+                Hits.Add(HitsArray[i]);
+            }
+            //because spherecast all returns a non-ordered array of hits we have to order them by their distance
+            Hits.Sort((hit1, hit2) => hit1.distance.CompareTo(hit2.distance));
+
+            for (int i = 0; i < Hits.Count; i++) 
+            {
+                RaycastHit Hit = Hits[i];
+                if (Hit.transform.gameObject.tag != tag)
+                {
+                    MyRb.velocity = MyRb.velocity.normalized;
+                    transform.position += Hit.distance * transform.TransformDirection(Vector3.forward);
+                    Debug.Log("Hitting " + Hit.transform.gameObject);
+                    OnTriggerEnter(Hit.collider);
+                    break;
+                }
             }
         }
     }
