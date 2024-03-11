@@ -6,8 +6,6 @@ public class SpaceShipControl : MonoBehaviour
 {
     [SerializeField]
     Unit MyUnit;
-    [SerializeField]
-    public GameObject playerMount;
 
     [SerializeField]
     public GameObject myCamera;
@@ -26,6 +24,7 @@ public class SpaceShipControl : MonoBehaviour
 
     void Start()
     {
+        MyUnit = GetComponent<Unit>();
         MyRB = GetComponent<Rigidbody>();
         HeadInput = myCamera.GetComponent<UnityEngine.InputSystem.XR.TrackedPoseDriver>();
         Speed = Mathf.Clamp(Speed, 0, MyUnit.maxSpeed);

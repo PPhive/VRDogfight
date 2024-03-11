@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public bool AI;
+    public bool TeamPlaceHolder;
 
     [SerializeField]
     private GameObject myCamera;
@@ -12,6 +13,7 @@ public class Player : MonoBehaviour
     private GameObject myRadar;
     public GameObject myShipPrefab;
     public GameObject myCurrentShip;
+    public Unit myShipUnit;
 
     void Start()
     {
@@ -25,31 +27,37 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K)) 
+        if (AI) //AI Player
         {
-            Mount();
+
         }
-
-
-        if (myCurrentShip != null) 
+        else //Real Player
         {
-            if (Input.GetKeyDown(KeyCode.L))
+            if (Input.GetKeyDown(KeyCode.K))
             {
-                myCurrentShip.GetComponent<Unit>().Hit(99999);
+                Mount();
             }
 
-            Unit myShipUnit = myCurrentShip.GetComponent<Unit>();
-            if (Input.GetKey(KeyCode.Alpha1) || Input.GetKey(KeyCode.Mouse0)) 
+            if (myCurrentShip != null)
             {
-                myShipUnit.AttemptToFireGuns(Gun.Slot.Left);
-            }
-            if (Input.GetKey(KeyCode.Alpha3) || Input.GetKey(KeyCode.Mouse1)) 
-            {
-                myShipUnit.AttemptToFireGuns(Gun.Slot.Right);
-            }
-            if (Input.GetKey(KeyCode.Alpha2) || Input.GetKey(KeyCode.Mouse2))
-            {
-                myShipUnit.AttemptToFireGuns(Gun.Slot.Mid);
+                if (Input.GetKeyDown(KeyCode.L))
+                {
+                    myCurrentShip.GetComponent<Unit>().Hit(99999);
+                }
+
+                Unit myShipUnit = myCurrentShip.GetComponent<Unit>();
+                if (Input.GetKey(KeyCode.Alpha1) || Input.GetKey(KeyCode.Mouse0))
+                {
+                    myShipUnit.AttemptToFireGuns(Gun.Slot.Left);
+                }
+                if (Input.GetKey(KeyCode.Alpha3) || Input.GetKey(KeyCode.Mouse1))
+                {
+                    myShipUnit.AttemptToFireGuns(Gun.Slot.Right);
+                }
+                if (Input.GetKey(KeyCode.Alpha2) || Input.GetKey(KeyCode.Mouse2))
+                {
+                    myShipUnit.AttemptToFireGuns(Gun.Slot.Mid);
+                }
             }
         }
     }
@@ -64,10 +72,25 @@ public class Player : MonoBehaviour
         if (transform.parent == null) 
         {
             myCurrentShip = Instantiate(myShipPrefab, transform.position, transform.rotation, transform.parent);
+            myCurrentShip.name = myCurrentShip.name + "-" + gameObject.name;
+            myShipUnit = myCurrentShip.GetComponent<Unit>();
+            myShipUnit.myPlayer = this;
+            if (AI)
+            {
+                myCurrentShip.GetComponent<SpaceShipControl>().enabled = false;
+                myCurrentShip.GetComponent<EnemyBasic>().enabled = true;
+                myShipUnit.scope.SetActive(false);
+            }
+            else 
+            {
+                myCurrentShip.GetComponent<SpaceShipControl>().enabled = true;
+                myCurrentShip.GetComponent<EnemyBasic>().enabled = false;
+                myShipUnit.scope.SetActive(true);
+                myCurrentShip.GetComponent<SpaceShipControl>().myCamera = myCamera;
+                myCurrentShip.GetComponent<LockOnReciever>().Radar = myRadar;
+            }
             myCurrentShip.tag = tag;
-            myCurrentShip.GetComponent<LockOnReciever>().Radar = myRadar;
-            transform.parent = myCurrentShip.GetComponent<SpaceShipControl>().playerMount.transform;
-            myCurrentShip.GetComponent<SpaceShipControl>().myCamera = myCamera;
+            transform.parent = myCurrentShip.GetComponent<Unit>().mount.transform;
             transform.localPosition = new Vector3();
             transform.localRotation = new Quaternion();
         }

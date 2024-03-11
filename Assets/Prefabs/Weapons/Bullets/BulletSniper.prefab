@@ -93,7 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4194740840251895906}
   - component: {fileID: 3718441443924073248}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Trail (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -244,7 +244,7 @@ GameObject:
   - component: {fileID: 8100592731115186899}
   - component: {fileID: 8100592731115186898}
   - component: {fileID: 7389339932610284006}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BulletSniper
   m_TagString: Bullet
   m_Icon: {fileID: 0}

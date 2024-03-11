@@ -21,9 +21,9 @@ public class Missle : MonoBehaviour
         MyRigidBody = GetComponent<Rigidbody>();
         Bullet MyBullet = GetComponent<Bullet>();
         List<GameObject> PossibleTargets = new List<GameObject>();
-        if (MyBullet.Owner != null && MyBullet.Owner.myLockOnReciever.List.Count > 0) 
+        if (MyBullet.Owner != null && MyBullet.Owner.myShipUnit.myLockOnReciever.List.Count > 0) 
         {
-            foreach (LockOnTargets TargetClass in MyBullet.Owner.myLockOnReciever.List)
+            foreach (LockOnTargets TargetClass in MyBullet.Owner.myShipUnit.myLockOnReciever.List)
             {
                 if (TargetClass.LockOnProgress >= 100) 
                 {

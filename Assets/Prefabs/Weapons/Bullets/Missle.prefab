@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6793811348845405089}
   - component: {fileID: 3442756681445537459}
   - component: {fileID: 632501159894666598}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Particle System
   m_TagString: Bullet
   m_Icon: {fileID: 0}
@@ -4848,7 +4848,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6205312983512878530}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Probe
   m_TagString: Bullet
   m_Icon: {fileID: 0}
@@ -4882,7 +4882,7 @@ GameObject:
   - component: {fileID: 6205312983845341553}
   - component: {fileID: 6205312983845341552}
   - component: {fileID: 6205312983845341555}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cylinder
   m_TagString: Bullet
   m_Icon: {fileID: 0}
@@ -4977,7 +4977,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6205312984440972115}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Model
   m_TagString: Bullet
   m_Icon: {fileID: 0}
@@ -5011,7 +5011,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6205312984562531444}
   - component: {fileID: 6205312984562531445}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Trail
   m_TagString: Bullet
   m_Icon: {fileID: 0}
@@ -5162,7 +5162,7 @@ GameObject:
   - component: {fileID: 6205312984997938369}
   - component: {fileID: 4986155154023366312}
   - component: {fileID: 6205312984997938368}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Missle
   m_TagString: Bullet
   m_Icon: {fileID: 0}
@@ -5265,7 +5265,7 @@ GameObject:
   - component: {fileID: 6205312985222310973}
   - component: {fileID: 6205312985222310960}
   - component: {fileID: 6205312985222310963}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sphere
   m_TagString: Bullet
   m_Icon: {fileID: 0}

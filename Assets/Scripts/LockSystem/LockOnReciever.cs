@@ -13,12 +13,13 @@ public class LockOnTargets
 
 public class LockOnReciever : MonoBehaviour
 {
+    bool isPlayerControlled = false;
+
     [SerializeField]
     public List<LockOnTargets> List;
 
     [SerializeField]
     GameObject LockOnRing;
-
     public GameObject Radar;
 
     [SerializeField]
@@ -28,7 +29,7 @@ public class LockOnReciever : MonoBehaviour
 
     void Start()
     {
-        
+        isPlayerControlled = GetComponent<Unit>().IsPlayerControlled();
     }
 
     void Update()
@@ -47,7 +48,10 @@ public class LockOnReciever : MonoBehaviour
         }
         foreach (LockOnTargets RemovingTarget in ToBeRemoved)
         {
-            Destroy(RemovingTarget.MyRing.gameObject);
+            if (RemovingTarget.MyRing != null) 
+            {
+                Destroy(RemovingTarget.MyRing.gameObject);
+            }
             List.Remove(RemovingTarget);
         }
     }
@@ -55,27 +59,31 @@ public class LockOnReciever : MonoBehaviour
     public void AddLockOnProgress(LockOnTargets TargetClass, float Progress) 
     {
         TargetClass.LockOnProgress = Mathf.Clamp(TargetClass.LockOnProgress + Progress, 0, 100);
-        if (TargetClass.LockOnProgress < 100)
+        if (isPlayerControlled) 
         {
-            MySound.pitch = 1f;
-            MySound.volume = 0.07f;
+            if (TargetClass.LockOnProgress < 100)
+            {
+                MySound.pitch = 1f;
+                MySound.volume = 0.07f;
+            }
+            else
+            {
+                MySound.pitch = 1.7f;
+                MySound.volume = 0.1f;
+            }
             MySound.PlayOneShot(SoundBeep);
-        }
-        else 
-        {
-            MySound.pitch = 1.7f;
-            MySound.volume = 0.1f;
-            MySound.PlayOneShot(SoundBeep);
+            TargetClass.MyRing.AnimateProgressRing(TargetClass.LockOnProgress);
         }
         TargetClass.Timer = 10;
-        TargetClass.MyRing.AnimateProgressRing(TargetClass.LockOnProgress);
-
     }
 
     public void CreateLockOnRing(LockOnTargets TargetClass) 
     {
+        if (isPlayerControlled) 
+        {
         GameObject NewRing = Instantiate(LockOnRing, Radar.transform);
         TargetClass.MyRing = NewRing.GetComponent<LockOnRing>();
         TargetClass.MyRing.MyTargetClass = TargetClass;
+        }
     }
 }

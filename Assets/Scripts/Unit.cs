@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    public enum state 
+    public Player myPlayer;
+    public enum state
     {
         Controlled,
         Dead,
         Returning,
     }
-
     public state mystate;
+
     [SerializeField]
     public HP myHP;
     [SerializeField]
@@ -20,11 +21,16 @@ public class Unit : MonoBehaviour
     public Rigidbody myRb;
     [SerializeField]
     private GameObject myShaker;
+    [SerializeField]
+    public GameObject mount;//where the player object will be located
+    [SerializeField]
+    public GameObject scope;
 
     //Speeds of all kind
     public float accel = 150;
     public float maxSpeed = 100;
     public float maxTurnspeed = 60;
+    public bool keyBoardControlOn = false;
 
     //Section for rotation control
     bool upsideDown;
@@ -36,6 +42,12 @@ public class Unit : MonoBehaviour
 
     void Start()
     {
+        if (myPlayer == null)
+        {
+            Debug.Log("No player found, setting team as Enemy");
+            tag = "Enemy";
+        }
+
         if (myRb == null)
         {
             myRb = GetComponent<Rigidbody>();
@@ -44,7 +56,7 @@ public class Unit : MonoBehaviour
         {
             myHP = GetComponent<HP>();
         }
-        if (myLockOnReciever == null) 
+        if (myLockOnReciever == null)
         {
             myLockOnReciever = GetComponent<LockOnReciever>();
         }
@@ -56,7 +68,7 @@ public class Unit : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (mystate == state.Controlled) 
+        if (mystate == state.Controlled)
         {
             if (Vector3.Distance(transform.position, new Vector3()) > 3000)
             {
@@ -65,22 +77,22 @@ public class Unit : MonoBehaviour
             }
             accelTowardVelocity();
         }
-        if (mystate == state.Returning) 
+        if (mystate == state.Returning)
         {
             accelTowardVelocity();
 
             if (Vector3.Distance((transform.forward * GameManager.instance.WorldRadius), new Vector3()) > 1000)
             {
-                transform.RotateAround(transform.position, transform.up, maxTurnspeed/2 * Time.deltaTime);
+                transform.RotateAround(transform.position, transform.up, maxTurnspeed / 2 * Time.deltaTime);
                 //transform.eulerAngles = Vector3.RotateTowards();
             }
-            else 
+            else
             {
                 mystate = state.Controlled;
             }
         }
     }
-    private void accelTowardVelocity() 
+    private void accelTowardVelocity()
     {
         if (myRb != null)
         {
@@ -108,7 +120,7 @@ public class Unit : MonoBehaviour
         myHP.TakeDamage(Damage);
     }
 
-    public void SetAllChildTag(Transform thisTransform) 
+    public void SetAllChildTag(Transform thisTransform)
     {
         thisTransform.tag = tag;
         if (thisTransform.childCount > 0)
@@ -121,11 +133,15 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void JoystickRotate(Transform Joystick, Transform GimbalOut, Transform GimbalIn, Vector3 JoystickOffset, float TurnSpeedMultiplier) 
+    public void JoystickRotate(Transform Joystick, Transform GimbalOut, Transform GimbalIn, Vector3 JoystickOffset, float TurnSpeedMultiplier)
     {
-    //Pitch
-        //Headset as Joystick
-        float turnspd = Joystick.localEulerAngles.x + JoystickOffset.x;
+        Vector3 JoystickAnglesClamped90 = Joystick.localEulerAngles;
+        JoystickAnglesClamped90.x = Mathf.Clamp(Bound180(JoystickAnglesClamped90.x), -90, 90);
+        JoystickAnglesClamped90.y = Mathf.Clamp(Bound180(JoystickAnglesClamped90.y), -90, 90); ;
+        JoystickAnglesClamped90.z = Mathf.Clamp(Bound180(JoystickAnglesClamped90.z), -90, 90); ;
+
+        //Pitch
+        float turnspd = JoystickAnglesClamped90.x + JoystickOffset.x;
         if (turnspd > 180)
         {
             turnspd -= 360;
@@ -135,33 +151,39 @@ public class Unit : MonoBehaviour
         turnspd = Mathf.Clamp(turnspd * TurnSpeedMultiplier, -maxTurnspeed, maxTurnspeed);
 
         //Keyboard override
-        if (Input.GetKey(KeyCode.W))
+        if (keyBoardControlOn)
         {
-            turnspd = maxTurnspeed / 2;
+            if (Input.GetKey(KeyCode.W))
+            {
+                turnspd = maxTurnspeed / 2;
+            }
+            if (Input.GetKey(KeyCode.S))
+            {
+                turnspd = -maxTurnspeed / 2;
+            }
         }
-        if (Input.GetKey(KeyCode.S))
-        {
-            turnspd = -maxTurnspeed / 2;
-        }
+
         transform.Rotate(Vector3.right * Time.deltaTime * turnspd, Space.Self);
 
-    //Yaw
+        //Yaw
         //Headset as Joystick
-        turnspd = Bound180(Joystick.localEulerAngles.y);
+        turnspd = Bound180(JoystickAnglesClamped90.y);
 
         //Clamping to max speed
         turnspd = Mathf.Clamp(turnspd * TurnSpeedMultiplier, -maxTurnspeed, maxTurnspeed);
 
         //Keyboard override
-        if (Input.GetKey(KeyCode.D))
+        if (keyBoardControlOn)
         {
-            turnspd = maxTurnspeed / 2;
+            if (Input.GetKey(KeyCode.D))
+            {
+                turnspd = maxTurnspeed / 2;
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                turnspd = -maxTurnspeed / 2;
+            }
         }
-        if (Input.GetKey(KeyCode.A))
-        {
-            turnspd = -maxTurnspeed / 2;
-        }
-
 
         //When plane is facing directly up and down, reduce turn speed;
         float angle = Mathf.Asin(Mathf.Abs((transform.position + transform.up).y - transform.position.y)) / 3.1415f * 180f;
@@ -188,7 +210,7 @@ public class Unit : MonoBehaviour
                                                         );
 
         //Roll the player object back to reduce motion sickness
-        if (tag != "Enemy") 
+        if (!myPlayer.AI)
         {
             Joystick.transform.parent.transform.parent.transform.localEulerAngles = Vector3.forward * Bound180(GimbalIn.localEulerAngles.z) * (-0.8f);
         }
@@ -222,7 +244,7 @@ public class Unit : MonoBehaviour
             transform.RotateAround(transform.position, transform.forward, 180);
         }
 
-        if (angle > 30) 
+        if (angle > 30)
         {
             transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, targetZ);
         }
@@ -247,10 +269,22 @@ public class Unit : MonoBehaviour
     {
         foreach (Gun myGun in MyWeapons)
         {
-            if (myGun.MySlot == FireSlot) 
+            if (myGun.MySlot == FireSlot)
             {
                 myGun.FireAttempted();
             }
         }
+    }
+
+    public bool IsPlayerControlled()//Is this unit controlled by an actual player?
+    {
+        if (myPlayer != null) 
+        {
+            if (!myPlayer.AI) 
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

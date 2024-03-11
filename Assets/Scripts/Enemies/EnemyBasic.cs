@@ -11,8 +11,9 @@ public class EnemyBasic : MonoBehaviour
         Dodging,
         Attacking,
     }
-
     public state myState;
+    public float StateTimer;
+    public Unit myTarget;
 
     [SerializeField]
     private Unit MyUnit;
@@ -40,6 +41,7 @@ public class EnemyBasic : MonoBehaviour
         DriftSpeed = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), Random.Range(-10f, 10f));
         LeftOrRight = (Random.Range(0,1) > 0);
         myState = state.Roaming;
+        StateTimer = Random.Range(3f,5f);
     }
 
     void Update()
@@ -47,42 +49,54 @@ public class EnemyBasic : MonoBehaviour
         //refreshes Joystick
         myJoystick.transform.localEulerAngles = new Vector3();
 
-        RaycastHit Hit;
-        if (Physics.SphereCast(transform.position + transform.TransformDirection(Vector3.forward), 3, transform.TransformDirection(Vector3.forward), out Hit, MyUnit.maxSpeed * 2))
+        //Timer that switchs state when timer runs out;
+        if (StateTimer > 0 && myState != state.Returning)
         {
-            if (Hit.transform.gameObject.tag == "TeamA")
-            {
-                MyUnit.AttemptToFireGuns(Gun.Slot.Left);
-            }
+            StateTimer -= Time.deltaTime;
+        }
+        else 
+        {
+            StateSelect();
         }
 
-        if (myState == state.Roaming)
+        if (myState == state.Returning)
         {
-            Destination = transform.position + transform.forward * 100f;
-
-            if (transform.position.magnitude > GameManager.instance.WorldRadius && myState != state.Returning)
-            {
-                Destination = new Vector3(Random.Range(-1, 1f), Random.Range(-1, 1f), Random.Range(-1, 1f)) * GameManager.instance.WorldRadius * 0.3f;
-                myState = state.Returning;
-            }
-            else if (true) 
-            {
-            
-            }
-        }
-        else if (myState == state.Returning)
-        {
-            if (transform.position.magnitude < GameManager.instance.WorldRadius * 0.9f) 
+            if (transform.position.magnitude < GameManager.instance.WorldRadius * 0.9f)
             {
                 myState = state.Roaming;
             }
         }
-        else if (myState == state.Dodging)
+        else if (myState == state.Roaming)
         {
+            Destination = transform.position + transform.forward * 100f;
+        }
+        else if (myState == state.Attacking)
+        {
+            if (myTarget == null)
+            {
+                StateTimer = 0;
+            }
+            else 
+            {
+                Destination = myTarget.transform.position;
+                //Tries to attack player
+                RaycastHit Hit;
+                if (Physics.SphereCast(transform.position + transform.TransformDirection(Vector3.forward), 3, transform.TransformDirection(Vector3.forward), out Hit, MyUnit.maxSpeed * 2))
+                {
+                    if (Hit.transform.gameObject.tag == myTarget.tag)
+                    {
+                        MyUnit.AttemptToFireGuns(Gun.Slot.Left);
+                    }
+                }
+            }
         }
 
         //if roamed out of play area, return to roughtly center
-
+        if (transform.position.magnitude > GameManager.instance.WorldRadius && myState != state.Returning)
+        {
+            Destination = new Vector3(Random.Range(-1, 1f), Random.Range(-1, 1f), Random.Range(-1, 1f)) * GameManager.instance.WorldRadius * 0.3f;
+            myState = state.Returning;
+        }
 
         myJoystick.transform.LookAt(Destination);
         OrganicDrift();
@@ -96,6 +110,50 @@ public class EnemyBasic : MonoBehaviour
     {
 
     }
+
+    private void StateSelect() 
+    {
+        if (Random.Range(0f, 1f) < 0.5f)
+        {
+            //Roaming
+            StateTimer = Random.Range(1f, 6f);
+            myState = state.Roaming;
+        }
+        else
+        {
+            //Attacking
+
+            //make a list of possible targets;
+            List<Unit> avaliableTargets = new List<Unit>();
+
+            //find all teams that aren't your own
+            foreach (GameManager.Team thisTeam in GameManager.instance.CurrentGame.teams) 
+            {
+                if (thisTeam.name != tag && thisTeam != GameManager.instance.CurrentGame.teams[0]) 
+                {
+                    foreach (Player thisPlayer in thisTeam.myPlayers) 
+                    {
+                        if (thisPlayer.myCurrentShip != null) 
+                        {
+                            avaliableTargets.Add(thisPlayer.myCurrentShip.GetComponent<Unit>());
+                        }
+                    }
+                }
+            }
+
+            if (avaliableTargets.Count > 0)
+            {
+                myTarget = avaliableTargets[Random.Range(0, avaliableTargets.Count)];
+            }
+            else 
+            {
+                StateTimer = 0;
+            }
+            StateTimer = Random.Range(10f, 20f);
+            myState = state.Attacking;
+        }
+    }
+
 
     private void Roomba() 
     {

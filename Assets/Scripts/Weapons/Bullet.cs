@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public Unit Owner;
+    public Player Owner;
 
     public GameObject Explosion;
     public GameObject ExplosionCrit;
@@ -20,7 +20,7 @@ public class Bullet : MonoBehaviour
 
     void Start()
     {
-        tag = Owner.tag;
+        tag = "Bullet";
         transform.localScale = new Vector3(1,1,1) * MyProjectile.size;
         MyRb = GetComponent<Rigidbody>();
 
@@ -56,69 +56,67 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == tag) 
+        if (other.gameObject.tag == "Bullet")
         {
             Debug.Log("hitting self");
         }
-
-        if (other.gameObject.tag != tag && other. gameObject.tag != "default")
+        else 
         {
-            //Debug.Log("Hit Landed with " + gameObject + ". Dealing " + MyProjectile.damage);
-            Unit TargetUnit = FindParentScript(other.transform);
-            if (TargetUnit != null)
+            if (other.gameObject.tag != tag && other.gameObject.tag != "default")
             {
-                if (TargetUnit.gameObject.GetComponent<LockOnAble>() != null && Owner.myLockOnReciever != null && TargetUnit.gameObject.GetComponent<LockOnAble>().isActiveAndEnabled) 
+                //Debug.Log("Hit Landed with " + gameObject + ". Dealing " + MyProjectile.damage);
+                Unit TargetUnit = FindParentScript(other.transform);
+                if (TargetUnit != null)
                 {
-                    LockOnAble ThisTarget = TargetUnit.gameObject.GetComponent<LockOnAble>();
-                    bool AlreadyLockedOn = false;
-                    ThisTargetClass.Target = ThisTarget;
-                    for (int i = 0; i < Owner.myLockOnReciever.List.Count; i++) 
+                    if (TargetUnit.gameObject.GetComponent<LockOnAble>() != null && Owner.myShipUnit.myLockOnReciever != null && TargetUnit.gameObject.GetComponent<LockOnAble>().isActiveAndEnabled)
                     {
-                        if (Owner.myLockOnReciever.List[i].Target == ThisTarget)
+                        LockOnAble ThisTarget = TargetUnit.gameObject.GetComponent<LockOnAble>();
+                        bool AlreadyLockedOn = false;
+                        ThisTargetClass.Target = ThisTarget;
+                        for (int i = 0; i < Owner.myShipUnit.myLockOnReciever.List.Count; i++)
                         {
-                            AlreadyLockedOn = true;
-                            ThisTargetClass = Owner.myLockOnReciever.List[i];
-                            if (ThisTargetClass.LockOnProgress >= 100) 
+                            if (Owner.myShipUnit.myLockOnReciever.List[i].Target == ThisTarget)
                             {
-                                MyProjectile.damage *= 1.5f;
+                                AlreadyLockedOn = true;
+                                ThisTargetClass = Owner.myShipUnit.myLockOnReciever.List[i];
+                                if (ThisTargetClass.LockOnProgress >= 100)
+                                {
+                                    MyProjectile.damage *= 1.5f;
+                                }
                             }
                         }
-                    }
 
-                    if (AlreadyLockedOn)
-                    {
-                        Owner.myLockOnReciever.AddLockOnProgress(ThisTargetClass, LockOnDamage);
+                        if (AlreadyLockedOn)
+                        {
+                            Owner.myShipUnit.myLockOnReciever.AddLockOnProgress(ThisTargetClass, LockOnDamage);
+                        }
+                        else
+                        {
+                            ThisTarget.List.Add(Owner.myShipUnit.myLockOnReciever);
+                            Owner.myShipUnit.myLockOnReciever.List.Add(ThisTargetClass);
+                            Owner.myShipUnit.myLockOnReciever.CreateLockOnRing(ThisTargetClass);
+                            Owner.myShipUnit.myLockOnReciever.AddLockOnProgress(ThisTargetClass, LockOnDamage);
+                        }
                     }
-                    else
+                    TargetUnit.Hit(MyProjectile.damage);
+                    if (TargetUnit.GetComponent<ModelShaker>() != null)
                     {
-                        ThisTarget.List.Add(Owner.myLockOnReciever);
-                        Owner.myLockOnReciever.List.Add(ThisTargetClass);
-                        Owner.myLockOnReciever.CreateLockOnRing(ThisTargetClass);
-                        Owner.myLockOnReciever.AddLockOnProgress(ThisTargetClass, LockOnDamage);
+                        TargetUnit.GetComponent<ModelShaker>().AddInertia(transform.position, MyRb.velocity.normalized * MyProjectile.damage * 1.5f);
+                        Debug.Log("tried to shake!");
                     }
                 }
-                TargetUnit.Hit(MyProjectile.damage);
-                if (TargetUnit.GetComponent<ModelShaker>() != null)
+                if (GetComponent<Collider>() != null)
                 {
-                    TargetUnit.GetComponent<ModelShaker>().AddInertia(transform.position, MyRb.velocity.normalized * MyProjectile.damage * 1.5f);
-                    Debug.Log("tried to shake!");
+                    GetComponent<Collider>().enabled = false;
                 }
             }
-            if (GetComponent<Collider>() != null) 
+
+            if (other.gameObject.tag != Owner.tag)
             {
-                GetComponent<Collider>().enabled = false;
+                Debug.Log(other.gameObject);
+                Disappear();
             }
-        }
-
-        if (other.gameObject.tag == Owner.gameObject.tag)
-        {
-
-        }
-        else
-        {
-            Debug.Log(other.gameObject);
-            Disappear();
-        }
+        } 
     }
 
     Unit FindParentScript(Transform other) 
@@ -152,11 +150,10 @@ public class Bullet : MonoBehaviour
             for (int i = 0; i < Hits.Count; i++) 
             {
                 RaycastHit Hit = Hits[i];
-                if (Hit.transform.gameObject.tag != tag)
+                if (Hit.transform.gameObject.tag != Owner.tag && Hit.transform.gameObject.tag != "Bullet")
                 {
                     MyRb.velocity = MyRb.velocity.normalized;
                     transform.position += Hit.distance * transform.TransformDirection(Vector3.forward);
-                    Debug.Log("Hitting " + Hit.transform.gameObject);
                     OnTriggerEnter(Hit.collider);
                     break;
                 }

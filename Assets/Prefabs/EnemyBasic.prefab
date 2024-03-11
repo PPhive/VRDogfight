@@ -918,6 +918,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myState: 0
+  StateTimer: 0
+  myTarget: {fileID: 0}
   MyUnit: {fileID: 9041336777822163547}
   MyRB: {fileID: 7288546518438312763}
   MyHP: {fileID: 7288546518438312762}
@@ -947,6 +949,7 @@ MonoBehaviour:
   accel: 10
   maxSpeed: 15
   maxTurnspeed: 60
+  keyBoardControlOn: 0
   targetVelocity: {x: 0, y: 0, z: 0}
   MyWeapons: []
 --- !u!54 &7288546518438312763
@@ -990,7 +993,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4277b94214d33940a99111c6a458068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MyModel: {fileID: 0}
+  MyModel: {fileID: 4204365773177312368}
   MyEulers: {x: 0, y: 0, z: 0}
   MyInertia: {x: 0, y: 0, z: 0}
   Spring: 50

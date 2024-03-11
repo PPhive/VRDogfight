@@ -92,7 +92,14 @@ public class Gun : MonoBehaviour
         SpawnedBullet.tag = tag;
         if (SpawnedBullet.GetComponent<Bullet>() != null)
         {
-            SpawnedBullet.GetComponent<Bullet>().Owner = Owner;
+            if (Owner.myPlayer != null)
+            {
+                SpawnedBullet.GetComponent<Bullet>().Owner = Owner.myPlayer;
+            }
+            else 
+            {
+                SpawnedBullet.GetComponent<Bullet>().Owner = GameManager.instance.CurrentGame.teams[0].myPlayers[0];//This is the neutral player
+            }
         }
         BarrelOffset.transform.localPosition = -Vector3.forward * 1;
         GunBlaze.Play();

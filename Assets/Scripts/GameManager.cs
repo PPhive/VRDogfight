@@ -29,12 +29,15 @@ public class GameManager : MonoBehaviour
         TeamDeathMatch
     }
 
-    public Game DefaultGame;
+    [SerializeField]
+    Game DefaultGame;
 
+    [SerializeField]
+    public Game CurrentGame;
     public static GameManager instance;
     int Seed;
 
-    public List<Player> Players;
+    public List<Player>Players;
     public float WorldRadius = 3000;
 
     void Awake()
@@ -52,6 +55,7 @@ public class GameManager : MonoBehaviour
     void Initialize(Game ThisGame) 
     {
         Seed = GenerateSeed();
+        CurrentGame = ThisGame;
     }
 
     void Start()
