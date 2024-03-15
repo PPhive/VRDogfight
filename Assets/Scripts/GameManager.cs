@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
 
     public List<Player>Players;
     public float WorldRadius = 3000;
+    public float WorldHeight = 20;
 
     void Awake()
     {
@@ -80,5 +81,29 @@ public class GameManager : MonoBehaviour
     public float SeededRandomRange(float min, float max, float x, float y) 
     {
         return Mathf.Lerp(min,max, Mathf.PerlinNoise(x * Seed, y * Seed));
+    }
+
+    public void UnitDestroyed(Player Destroyer, Unit Destroyed) 
+    {
+        Debug.Log(Destroyer + " destroyed " + Destroyed!);
+        if (Destroyer.myTeam == CurrentGame.teams[0])
+        {
+            Debug.Log(Destroyed + " got destroyed by neutral unit!");
+        }
+        else 
+        {
+            Scoring(1, Destroyer);
+        }
+    }
+
+    public void Scoring(int Score, Player ScoringPlayer) 
+    {
+        foreach (Team thisTeam in CurrentGame.teams) 
+        {
+            if (thisTeam.myPlayers.Contains(ScoringPlayer)) 
+            {
+                thisTeam.score += Score;
+            }
+        }
     }
 }

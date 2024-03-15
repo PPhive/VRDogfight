@@ -12,6 +12,7 @@ public class Unit : MonoBehaviour
         Returning,
     }
     public state mystate;
+    public Player lasthitFrom;
 
     [SerializeField]
     public HP myHP;
@@ -46,6 +47,7 @@ public class Unit : MonoBehaviour
         {
             Debug.Log("No player found, setting team as Enemy");
             tag = "Enemy";
+            SetAllChildTag(transform);
         }
 
         if (myRb == null)
@@ -140,6 +142,8 @@ public class Unit : MonoBehaviour
         JoystickAnglesClamped90.y = Mathf.Clamp(Bound180(JoystickAnglesClamped90.y), -90, 90); ;
         JoystickAnglesClamped90.z = Mathf.Clamp(Bound180(JoystickAnglesClamped90.z), -90, 90); ;
 
+        Vector3 SeatMotion = new Vector3();
+
         //Pitch
         float turnspd = JoystickAnglesClamped90.x + JoystickOffset.x;
         if (turnspd > 180)
@@ -163,6 +167,7 @@ public class Unit : MonoBehaviour
             }
         }
 
+        SeatMotion.x = turnspd;
         transform.Rotate(Vector3.right * Time.deltaTime * turnspd, Space.Self);
 
         //Yaw
@@ -212,8 +217,13 @@ public class Unit : MonoBehaviour
         //Roll the player object back to reduce motion sickness
         if (!myPlayer.AI)
         {
-            Joystick.transform.parent.transform.parent.transform.localEulerAngles = Vector3.forward * Bound180(GimbalIn.localEulerAngles.z) * (-0.8f);
+            float rollangle = Bound180(GimbalIn.localEulerAngles.z) * (-0.8f);
+            SeatMotion.z = rollangle;
+            Joystick.transform.parent.transform.parent.transform.localEulerAngles = Vector3.forward * rollangle;
         }
+
+        //Yaw seat motion must shouldn't be reversed;
+        SeatMotion.y = turnspd;
 
         //If joystick is upside down, reverse turn direction;
         bool Upsidedown = (Joystick.position + Joystick.up).y < Joystick.position.y;
@@ -250,6 +260,12 @@ public class Unit : MonoBehaviour
         }
 
         lastUpsideDown = upsideDown;
+
+        //For motionseat telemetry
+        if (myPlayer != null && !myPlayer.AI)
+        {
+            GetComponent<SpaceShipControl>().telemetry.PitchYawRoll = SeatMotion;
+        }
     }
 
     public float Bound180(float eulerZ)

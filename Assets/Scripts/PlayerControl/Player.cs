@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public GameManager.Team myTeam;
     public bool AI;
     public bool TeamPlaceHolder;
 
@@ -15,6 +16,9 @@ public class Player : MonoBehaviour
     public GameObject myCurrentShip;
     public Unit myShipUnit;
 
+    [SerializeField]
+    UnityEngine.InputSystem.XR.TrackedPoseDriver HeadInput;
+
     void Start()
     {
         if (!GameManager.instance.Players.Contains(this))
@@ -22,7 +26,10 @@ public class Player : MonoBehaviour
             GameManager.instance.Players.Add(this);
         }
 
-        Mount();
+        if (tag != "Neutral") 
+        {
+            Mount();
+        }
     }
 
     void Update()
@@ -69,30 +76,52 @@ public class Player : MonoBehaviour
 
     public void Mount() 
     {
-        if (transform.parent == null) 
+        if (transform.parent == null)
         {
             myCurrentShip = Instantiate(myShipPrefab, transform.position, transform.rotation, transform.parent);
-            myCurrentShip.name = myCurrentShip.name + "-" + gameObject.name;
-            myShipUnit = myCurrentShip.GetComponent<Unit>();
-            myShipUnit.myPlayer = this;
-            if (AI)
-            {
-                myCurrentShip.GetComponent<SpaceShipControl>().enabled = false;
-                myCurrentShip.GetComponent<EnemyBasic>().enabled = true;
-                myShipUnit.scope.SetActive(false);
-            }
-            else 
-            {
-                myCurrentShip.GetComponent<SpaceShipControl>().enabled = true;
-                myCurrentShip.GetComponent<EnemyBasic>().enabled = false;
-                myShipUnit.scope.SetActive(true);
-                myCurrentShip.GetComponent<SpaceShipControl>().myCamera = myCamera;
-                myCurrentShip.GetComponent<LockOnReciever>().Radar = myRadar;
-            }
-            myCurrentShip.tag = tag;
-            transform.parent = myCurrentShip.GetComponent<Unit>().mount.transform;
-            transform.localPosition = new Vector3();
-            transform.localRotation = new Quaternion();
+        }
+        else 
+        {
+            myCurrentShip = CheckTopParent(gameObject);
+        }
+        myCurrentShip.name = myCurrentShip.name + "-" + gameObject.name;
+        myShipUnit = myCurrentShip.GetComponent<Unit>();
+        myShipUnit.myPlayer = this;
+        if (AI)
+        {
+            myCurrentShip.GetComponent<SpaceShipControl>().enabled = false;
+            myCurrentShip.GetComponent<EnemyBasic>().enabled = true;
+            myShipUnit.scope.SetActive(false);
+            myShipUnit.GetComponent<Telemetry>().enabled = false;
+            myShipUnit.GetComponent<SimRacingStudio>().enabled = false;
+        }
+        else
+        {
+            SpaceShipControl MyController = myCurrentShip.GetComponent<SpaceShipControl>();
+            MyController.enabled = true;
+            myCurrentShip.GetComponent<EnemyBasic>().enabled = false;
+            myShipUnit.scope.SetActive(true);
+            MyController.myCamera = myCamera;
+            myCurrentShip.GetComponent<LockOnReciever>().Radar = myRadar;
+            MyController.HeadInput = HeadInput;
+            myShipUnit.GetComponent<Telemetry>().enabled = true;
+            myShipUnit.GetComponent<SimRacingStudio>().enabled = true;
+        }
+        myCurrentShip.tag = tag;
+        transform.parent = myCurrentShip.GetComponent<Unit>().mount.transform;
+        transform.localPosition = new Vector3();
+        transform.localRotation = new Quaternion();
+    }
+
+    GameObject CheckTopParent(GameObject Checking)
+    {
+        if (Checking.transform.parent != null)
+        {
+            return CheckTopParent(CheckTopParent(Checking.transform.parent.gameObject));
+        }
+        else 
+        {
+            return Checking;
         }
     }
 }

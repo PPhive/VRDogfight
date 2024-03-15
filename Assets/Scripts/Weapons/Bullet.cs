@@ -5,7 +5,6 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public Player Owner;
-
     public GameObject Explosion;
     public GameObject ExplosionCrit;
     public bool ExplodeOnTimeOut = false;
@@ -98,6 +97,7 @@ public class Bullet : MonoBehaviour
                             Owner.myShipUnit.myLockOnReciever.AddLockOnProgress(ThisTargetClass, LockOnDamage);
                         }
                     }
+                    TargetUnit.lasthitFrom = Owner;
                     TargetUnit.Hit(MyProjectile.damage);
                     if (TargetUnit.GetComponent<ModelShaker>() != null)
                     {

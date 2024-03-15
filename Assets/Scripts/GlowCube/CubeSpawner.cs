@@ -33,11 +33,11 @@ public class CubeSpawner : MonoBehaviour
         {
             for (int z = -RadiusbyChunk; z < RadiusbyChunk; z++) 
             {
-                if (!(new Vector2(x * ChunkSize, z * ChunkSize).magnitude < radius * 0.3f || new Vector2(x * ChunkSize, z * ChunkSize).magnitude > radius)) 
+                if (!(new Vector2(x * ChunkSize, z * ChunkSize).magnitude < radius * 0.1f || new Vector2(x * ChunkSize, z * ChunkSize).magnitude > radius)) 
                 {
                     SpawnerNode = new Vector3(x, Random.Range(-20f, 20f), z) * ChunkSize;
                     //what's in this chunk
-                    if (Random.Range(0f, 1.0f) > 0.97f)
+                    if (Random.Range(0f, 1.0f) > 0.98f)
                     {
                         Instantiate(CubeIsland, SpawnerNode, transform.rotation, transform);
                     }

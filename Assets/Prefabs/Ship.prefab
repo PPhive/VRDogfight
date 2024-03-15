@@ -188,6 +188,8 @@ GameObject:
   - component: {fileID: 599911063565726125}
   - component: {fileID: 599911063565726126}
   - component: {fileID: 4052132547514018191}
+  - component: {fileID: 526412237722530108}
+  - component: {fileID: 8326771354129028401}
   m_Layer: 0
   m_Name: Ship
   m_TagString: TeamA
@@ -225,15 +227,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myPlayer: {fileID: 0}
+  Telemetry: {fileID: 8326771354129028401}
   mystate: 0
+  lasthitFrom: {fileID: 0}
   myHP: {fileID: 0}
   myLockOnReciever: {fileID: 599911063565726125}
   myRb: {fileID: 599911063565726120}
   myShaker: {fileID: 599911065093209731}
   mount: {fileID: 3674200715978806703}
   scope: {fileID: 599911064401887090}
-  accel: 10
-  maxSpeed: 15
+  accel: 50
+  maxSpeed: 20
   maxTurnspeed: 40
   keyBoardControlOn: 0
   targetVelocity: {x: 0, y: 0, z: 0}
@@ -245,16 +249,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 599911063565726127}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 958e08495408ab84ea381649d784621c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MyUnit: {fileID: 0}
+  Telemetry: {fileID: 0}
   myCamera: {fileID: 0}
   MyRB: {fileID: 0}
   MyModel: {fileID: 599911065093209731}
-  Speed: 15
+  Throttle: 1
   MouseOverride: 0
   HeadInput: {fileID: 0}
 --- !u!114 &8728100287353437404
@@ -312,7 +317,7 @@ MonoBehaviour:
   Owner: {fileID: 599911063565726103}
   Explosion: {fileID: 2150040323103579151, guid: 7f1279dda1d4d1b46bcbc6ddc21bd040,
     type: 3}
-  HitPoints: 200
+  HitPoints: 100
 --- !u!114 &599911063565726125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -440,6 +445,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   List: []
+--- !u!114 &526412237722530108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 599911063565726127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 774ed5d47549b3144aecd87a3dd82305, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  srsHostIP: 127.0.0.1
+  srsHostPort: 33001
+--- !u!114 &8326771354129028401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 599911063565726127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79b3876a89b5a474d90929cf93774559, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RollPitchYaw: {x: 0, y: 0, z: 0}
+  game: Project Cars 2
+  vehicle: Lamborghini Huracan
+  location: Circuit Gilles-Villeneuve
 --- !u!1 &599911063578035159
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,10 +633,10 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.5
+  m_Time: 0.3
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.2
+    widthMultiplier: 0.6
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -862,10 +897,10 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.5
+  m_Time: 0.3
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.2
+    widthMultiplier: 0.6
     widthCurve:
       serializedVersion: 2
       m_Curve:

@@ -114,7 +114,7 @@ public class Gun : MonoBehaviour
         }
     }
 
-    private GameObject CheckOwner(GameObject Checking) 
+    GameObject CheckOwner(GameObject Checking) 
     {
         if (Checking.GetComponent<Unit>() != null)
         {

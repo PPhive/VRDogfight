@@ -55,7 +55,8 @@ public class LockOnRing : MonoBehaviour
     {
         try 
         {
-            transform.LookAt(MyTargetClass.Target.gameObject.transform); 
+            transform.LookAt(MyTargetClass.Target.gameObject.transform);
+            transform.localEulerAngles -= new Vector3(0, 0, transform.localEulerAngles.z);//Always point up
         }
         catch 
         {

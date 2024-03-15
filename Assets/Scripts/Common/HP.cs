@@ -21,11 +21,12 @@ public class HP : MonoBehaviour
 
             BroadcastMessage("RemoveMyself");
 
-            if (transform.GetComponent<SpaceShipControl>() != null) 
+            if (Owner.myPlayer != null) 
             {
                 transform.BroadcastMessage("UnMount");
-            }
 
+            }
+            GameManager.instance.UnitDestroyed(Owner.lasthitFrom, Owner);
             Destroy(gameObject);
         }
     }

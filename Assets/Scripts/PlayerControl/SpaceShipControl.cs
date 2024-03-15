@@ -6,6 +6,8 @@ public class SpaceShipControl : MonoBehaviour
 {
     [SerializeField]
     Unit MyUnit;
+    public Telemetry telemetry;
+    public SimRacingStudio simRacingStudio;
 
     [SerializeField]
     public GameObject myCamera;
@@ -14,12 +16,12 @@ public class SpaceShipControl : MonoBehaviour
     [SerializeField]
     GameObject MyModel;
     [SerializeField]
-    float Speed;
+    float Throttle = 1;
 
     [SerializeField]
     public bool MouseOverride = false;
     [SerializeField]
-    UnityEngine.InputSystem.XR.TrackedPoseDriver HeadInput;
+    public UnityEngine.InputSystem.XR.TrackedPoseDriver HeadInput;
     Vector2 turn;
 
     void Start()
@@ -27,7 +29,9 @@ public class SpaceShipControl : MonoBehaviour
         MyUnit = GetComponent<Unit>();
         MyRB = GetComponent<Rigidbody>();
         HeadInput = myCamera.GetComponent<UnityEngine.InputSystem.XR.TrackedPoseDriver>();
-        Speed = Mathf.Clamp(Speed, 0, MyUnit.maxSpeed);
+
+        telemetry = GetComponent<Telemetry>();
+        simRacingStudio = GetComponent<SimRacingStudio>();
     }
 
     // Update is called once per frame
@@ -38,7 +42,7 @@ public class SpaceShipControl : MonoBehaviour
             MyUnit.myHP.TakeDamage(114514);
         }
 
-        MyUnit.targetVelocity = transform.forward * Speed;
+        MyUnit.targetVelocity = transform.forward * MyUnit.maxSpeed * Throttle;
 
         //Mouse override
         if (Input.GetKeyDown(KeyCode.LeftShift))

@@ -49,4 +49,4 @@ MonoBehaviour:
   GlowCubeWindow: {fileID: 1240725362703324740, guid: 87e4a094d8ded52409194aed95057463,
     type: 3}
   Length: 4
-  Size: 5
+  Size: 15

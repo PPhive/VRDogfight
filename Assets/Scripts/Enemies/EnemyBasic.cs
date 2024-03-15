@@ -92,7 +92,7 @@ public class EnemyBasic : MonoBehaviour
         }
 
         //if roamed out of play area, return to roughtly center
-        if (transform.position.magnitude > GameManager.instance.WorldRadius && myState != state.Returning)
+        if ((transform.position.magnitude > GameManager.instance.WorldRadius || Mathf.Abs(transform.position.y) > GameManager.instance.WorldHeight * 1.1f)&& myState != state.Returning)
         {
             Destination = new Vector3(Random.Range(-1, 1f), Random.Range(-1, 1f), Random.Range(-1, 1f)) * GameManager.instance.WorldRadius * 0.3f;
             myState = state.Returning;
