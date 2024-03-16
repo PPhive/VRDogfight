@@ -5,6 +5,7 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     public Player myPlayer;
+    public bool AI;
     public enum state
     {
         Controlled,
@@ -41,14 +42,23 @@ public class Unit : MonoBehaviour
     //WeaponSystem
     public List<Gun> MyWeapons;
 
+    void Awake()
+    {
+
+    }
+
     void Start()
     {
         if (myPlayer == null)
         {
-            Debug.Log("No player found, setting team as Enemy");
-            tag = "Enemy";
-            SetAllChildTag(transform);
+            Debug.Log("No player found, setting team as Neutral");
+            tag = "Neutral";
         }
+        else
+        {
+            AI = myPlayer.AI;
+        }
+        SetAllChildTag(transform);
 
         if (myRb == null)
         {
@@ -167,7 +177,7 @@ public class Unit : MonoBehaviour
             }
         }
 
-        SeatMotion.x = turnspd;
+        SeatMotion.x = -turnspd;
         transform.Rotate(Vector3.right * Time.deltaTime * turnspd, Space.Self);
 
         //Yaw
@@ -217,7 +227,7 @@ public class Unit : MonoBehaviour
         //Roll the player object back to reduce motion sickness
         if (!myPlayer.AI)
         {
-            float rollangle = Bound180(GimbalIn.localEulerAngles.z) * (-0.8f);
+            float rollangle = Bound180(GimbalIn.localEulerAngles.z) * (-0.5f);
             SeatMotion.z = rollangle;
             Joystick.transform.parent.transform.parent.transform.localEulerAngles = Vector3.forward * rollangle;
         }
@@ -264,6 +274,8 @@ public class Unit : MonoBehaviour
         //For motionseat telemetry
         if (myPlayer != null && !myPlayer.AI)
         {
+            float PitchbySpeed = Vector3.Dot(myRb.velocity, transform.forward) * Mathf.Clamp(myRb.velocity.magnitude / maxSpeed / transform.localScale.magnitude, 0, 5);
+            SeatMotion.x += PitchbySpeed;
             GetComponent<SpaceShipControl>().telemetry.PitchYawRoll = SeatMotion;
         }
     }

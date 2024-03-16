@@ -13,7 +13,7 @@ public class LockOnTargets
 
 public class LockOnReciever : MonoBehaviour
 {
-    bool isPlayerControlled = false;
+    Unit myUnit;
 
     [SerializeField]
     public List<LockOnTargets> List;
@@ -29,7 +29,7 @@ public class LockOnReciever : MonoBehaviour
 
     void Start()
     {
-        isPlayerControlled = GetComponent<Unit>().IsPlayerControlled();
+        myUnit = GetComponent<Unit>();
     }
 
     void Update()
@@ -59,7 +59,7 @@ public class LockOnReciever : MonoBehaviour
     public void AddLockOnProgress(LockOnTargets TargetClass, float Progress) 
     {
         TargetClass.LockOnProgress = Mathf.Clamp(TargetClass.LockOnProgress + Progress, 0, 100);
-        if (isPlayerControlled) 
+        if (!myUnit.AI) 
         {
             if (TargetClass.LockOnProgress < 100)
             {
@@ -79,7 +79,7 @@ public class LockOnReciever : MonoBehaviour
 
     public void CreateLockOnRing(LockOnTargets TargetClass) 
     {
-        if (isPlayerControlled) 
+        if (!myUnit.AI) 
         {
         GameObject NewRing = Instantiate(LockOnRing, Radar.transform);
         TargetClass.MyRing = NewRing.GetComponent<LockOnRing>();

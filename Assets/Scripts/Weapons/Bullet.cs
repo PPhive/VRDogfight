@@ -61,7 +61,7 @@ public class Bullet : MonoBehaviour
         }
         else 
         {
-            if (other.gameObject.tag != tag && other.gameObject.tag != "default")
+            if (other.gameObject.tag != Owner.tag && other.gameObject.tag != "default")
             {
                 //Debug.Log("Hit Landed with " + gameObject + ". Dealing " + MyProjectile.damage);
                 Unit TargetUnit = FindParentScript(other.transform);
@@ -111,7 +111,7 @@ public class Bullet : MonoBehaviour
                 }
             }
 
-            if (other.gameObject.tag != Owner.tag)
+            if (other.attachedRigidbody == null || other.attachedRigidbody.gameObject != Owner.myShipUnit.gameObject)
             {
                 Debug.Log(other.gameObject);
                 Disappear();
@@ -153,8 +153,12 @@ public class Bullet : MonoBehaviour
                 if (Hit.transform.gameObject.tag != Owner.tag && Hit.transform.gameObject.tag != "Bullet")
                 {
                     MyRb.velocity = MyRb.velocity.normalized;
-                    transform.position += Hit.distance * transform.TransformDirection(Vector3.forward);
-                    OnTriggerEnter(Hit.collider);
+
+                    if (Hit.collider != null)
+                    {
+                        transform.position += Hit.distance * transform.TransformDirection(Vector3.forward);
+                        OnTriggerEnter(Hit.collider);
+                    }
                     break;
                 }
             }

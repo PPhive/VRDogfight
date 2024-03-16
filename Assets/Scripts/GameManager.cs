@@ -2,8 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class Team
+{
+    public int index;
+    public string name;
+    public List<Player> myPlayers;
+    public int score;
+}
+
 public class GameManager : MonoBehaviour
 {
+
     [System.Serializable]
     public class Game 
     {
@@ -14,12 +24,17 @@ public class GameManager : MonoBehaviour
         public float TimerSec;
     }
 
-    [System.Serializable]
-    public class Team 
+    public GameObject CheckMyUnit(GameObject Checking)
     {
-        public string name;
-        public List<Player> myPlayers;
-        public int score;
+        if (Checking.GetComponent<Unit>() != null)
+        {
+            return Checking.gameObject;
+        }
+        else if (Checking.transform.parent != null)
+        {
+            return CheckMyUnit(CheckMyUnit(Checking.transform.parent.gameObject));
+        }
+        return null;
     }
 
     [System.Serializable]
@@ -57,6 +72,16 @@ public class GameManager : MonoBehaviour
     {
         Seed = GenerateSeed();
         CurrentGame = ThisGame;
+        for (int i = 0; i < CurrentGame.teams.Count; i++)
+        {
+            Team thisTeam = CurrentGame.teams[i];
+            thisTeam.index = i;
+            foreach (Player thisPlayer in thisTeam.myPlayers) 
+            {
+                thisPlayer.myTeam = thisTeam;
+                thisPlayer.tag = thisTeam.name;
+            }
+        }
     }
 
     void Start()
