@@ -71,6 +71,7 @@ public class Player : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.K))
                 {
                     Mount();
+                    myShipUnit.keyBoardControlOn = true;
                 }
 
                 if (Input.GetKeyDown(KeyCode.R))
@@ -87,15 +88,15 @@ public class Player : MonoBehaviour
                     }
 
                     myShipUnit = myCurrentShip.GetComponent<Unit>();
-                    if (Input.GetKey(KeyCode.Alpha1) || Input.GetKey(KeyCode.Mouse0))
+                    if (Input.GetKey(KeyCode.Alpha1) || Input.GetKey(KeyCode.Mouse0) || Input.GetButton("Fire1"))
                     {
                         myShipUnit.AttemptToFireGuns(Gun.Slot.Left);
                     }
-                    if (Input.GetKey(KeyCode.Alpha3) || Input.GetKey(KeyCode.Mouse1))
+                    if (Input.GetKey(KeyCode.Alpha3) || Input.GetKey(KeyCode.Mouse1) || Input.GetButton("Fire2"))
                     {
                         myShipUnit.AttemptToFireGuns(Gun.Slot.Right);
                     }
-                    if (Input.GetKey(KeyCode.Alpha2) || Input.GetKey(KeyCode.Mouse2))
+                    if (Input.GetKey(KeyCode.Alpha2) || Input.GetKey(KeyCode.Mouse2) || Input.GetButton("Fire3"))
                     {
                         myShipUnit.AttemptToFireGuns(Gun.Slot.Mid);
                     }

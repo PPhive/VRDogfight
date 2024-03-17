@@ -256,6 +256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MyUnit: {fileID: 0}
+  myJoystick: {fileID: 2432216194652304902}
   telemetry: {fileID: 0}
   simRacingStudio: {fileID: 0}
   myCamera: {fileID: 0}

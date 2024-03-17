@@ -113,7 +113,6 @@ public class Bullet : MonoBehaviour
 
             if (other.attachedRigidbody == null || other.attachedRigidbody.gameObject != Owner.myShipUnit.gameObject)
             {
-                Debug.Log(other.gameObject);
                 Disappear();
             }
         } 

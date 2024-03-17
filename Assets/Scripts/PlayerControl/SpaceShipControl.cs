@@ -6,6 +6,8 @@ public class SpaceShipControl : MonoBehaviour
 {
     [SerializeField]
     Unit MyUnit;
+    [SerializeField]
+    Transform myJoystick;
     public Telemetry telemetry;
     public SimRacingStudio simRacingStudio;
 
@@ -39,7 +41,7 @@ public class SpaceShipControl : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.T)) 
         {
-            MyUnit.myHP.TakeDamage(114514);
+            MyUnit.myHP.TakeDamage(999999);
         }
 
         MyUnit.targetVelocity = transform.forward * MyUnit.maxSpeed * Throttle;
@@ -64,13 +66,16 @@ public class SpaceShipControl : MonoBehaviour
             turn.x += Input.GetAxis("Mouse X");
             turn.y += Input.GetAxis("Mouse Y");
             myCamera.transform.localRotation = Quaternion.Euler(-turn.y, turn.x, 0);
-            MyUnit.JoystickRotate(myCamera.transform, gameObject.transform, MyModel.transform, new Vector3(0, 0, 0), 2);
         }
         else 
         {
             HeadInput.enabled = true;
-            MyUnit.JoystickRotate(myCamera.transform, gameObject.transform, MyModel.transform, new Vector3(0, 0, 0), 2);
         }
+
+        myJoystick.localEulerAngles = myCamera.transform.localEulerAngles;
+        myJoystick.localEulerAngles += Vector3.forward * (Input.GetAxis("SteeringWheelRoll") * -90f - myJoystick.localEulerAngles.z);
+
+        MyUnit.JoystickRotate(myJoystick, gameObject.transform, MyModel.transform, new Vector3(0, 0, 0), 2, true);
 
         //Roll the player object back to reduce motion sickness
         myCamera.transform.parent.transform.parent.transform.localEulerAngles = Vector3.forward * MyUnit.Bound180(MyModel.transform.localEulerAngles.z) * (-0.2f);

@@ -112,7 +112,7 @@ public class EnemyBasic : MonoBehaviour
         myJoystick.transform.LookAt(Destination);
         OrganicDrift();
         Roomba();
-        MyUnit.JoystickRotate(myJoystick.transform,transform, myModel.transform, new Vector3() ,1);
+        MyUnit.JoystickRotate(myJoystick.transform,transform, myModel.transform, new Vector3() ,1, false);
         MyUnit.targetVelocity = transform.forward * MyUnit.maxSpeed * 1f;
     }
 
