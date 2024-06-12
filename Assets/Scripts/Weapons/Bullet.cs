@@ -153,10 +153,17 @@ public class Bullet : MonoBehaviour
                 {
                     MyRb.velocity = MyRb.velocity.normalized;
 
-                    if (Hit.collider != null)
+                    try
                     {
-                        transform.position += Hit.distance * transform.TransformDirection(Vector3.forward);
-                        OnTriggerEnter(Hit.collider);
+                        if (Hit.collider != null)
+                        {
+                            transform.position += Hit.distance * transform.TransformDirection(Vector3.forward);
+                            OnTriggerEnter(Hit.collider);
+                        }
+                    }
+                    catch 
+                    {
+                        Debug.Log("Bullet glitch ignored");
                     }
                     break;
                 }

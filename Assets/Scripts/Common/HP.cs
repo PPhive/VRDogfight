@@ -21,11 +21,18 @@ public class HP : MonoBehaviour
 
             BroadcastMessage("RemoveMyself");
 
-            if (Owner.myPlayer != null) 
+            try
             {
-                transform.BroadcastMessage("UnMount");
-
+                if (Owner.myPlayer != null)
+                {
+                    transform.BroadcastMessage("UnMount");
+                }
             }
+            catch 
+            {
+                Debug.Log("Player should've been unmounted but hp is still trying to call it");
+            }
+
             GameManager.instance.UnitDestroyed(Owner.lasthitFrom, Owner);
             Destroy(gameObject);
         }
