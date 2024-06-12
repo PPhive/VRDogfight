@@ -44,7 +44,7 @@ public class Gun : MonoBehaviour
     void Start()
     {
         //Check which unit is my owner by looking into every parent
-        Unit CheckingOwner = CheckOwner(gameObject).GetComponent<Unit>();
+        Unit CheckingOwner = GameManager.instance.CheckMyUnit(gameObject).GetComponent<Unit>();
         Owner = CheckingOwner;
 
         //Checking if weapon is one left or right and determine control based on that
@@ -112,19 +112,6 @@ public class Gun : MonoBehaviour
         {
             BarrelOffset.transform.localPosition += Vector3.forward * 10 * Time.deltaTime;
         }
-    }
-
-    GameObject CheckOwner(GameObject Checking) 
-    {
-        if (Checking.GetComponent<Unit>() != null)
-        {
-            return Checking.gameObject;
-        }
-        else if (Checking.transform.parent != null)
-        {
-            return CheckOwner(CheckOwner(Checking.transform.parent.gameObject));
-        }
-        return null;
     }
 
     public void FireAttempted() 

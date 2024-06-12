@@ -104,7 +104,7 @@ public class SimRacingStudio : MonoBehaviour
             Marshal.StructureToPtr(tp, ptr, true);
             Marshal.Copy(ptr, packet, 0, size);
 
-			Debug.Log("Sending: " + tp.version);
+			//Debug.Log("Sending: " + tp.version);
 
 
             udpClient.Send(packet, packet.Length, remoteEndPoint);

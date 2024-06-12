@@ -1,0 +1,10 @@
+joystick button 0,1,2,3 square circle etc.
+joystick button 4,5 Gear Shifters or R1L1
+joystick button 6,7 R2L2
+
+x axis = steering wheel
+y axis = clutch
+3rd axis = gas
+4th axis = brake
+
+
