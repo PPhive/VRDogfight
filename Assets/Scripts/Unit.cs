@@ -384,9 +384,12 @@ public class Unit : MonoBehaviour
     {
         foreach (Gun myGun in MyWeapons)
         {
-            if (myGun.MySlot == FireSlot)
+            if (myGun.isActiveAndEnabled) 
             {
-                myGun.FireAttempted();
+                if (myGun.MySlot == FireSlot)
+                {
+                    myGun.FireAttempted();
+                }
             }
         }
     }
