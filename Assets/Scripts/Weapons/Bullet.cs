@@ -57,7 +57,7 @@ public class Bullet : MonoBehaviour
     {
         if (other.gameObject.tag == "Bullet")
         {
-            Debug.Log("hitting self");
+            //Debug.Log("hitting self");
         }
         else 
         {

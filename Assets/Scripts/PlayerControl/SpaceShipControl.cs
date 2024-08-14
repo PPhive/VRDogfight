@@ -24,7 +24,7 @@ public class SpaceShipControl : MonoBehaviour
     public bool MouseOverride = false;
     [SerializeField]
     public UnityEngine.InputSystem.XR.TrackedPoseDriver HeadInput;
-    Vector2 turn;
+    Vector3 turn;
 
     void Start()
     {
@@ -65,7 +65,9 @@ public class SpaceShipControl : MonoBehaviour
             HeadInput.enabled = false;
             turn.x += Input.GetAxis("Mouse X");
             turn.y += Input.GetAxis("Mouse Y");
+            //turn.z += Input.GetAxis("Horizontal"); //This is qe or steering wheel, check keyboard manager
             myCamera.transform.localRotation = Quaternion.Euler(-turn.y, turn.x, 0);
+            
         }
         else 
         {
@@ -73,8 +75,9 @@ public class SpaceShipControl : MonoBehaviour
         }
 
         myJoystick.localEulerAngles = myCamera.transform.localEulerAngles;
-        myJoystick.localEulerAngles += Vector3.forward * (Input.GetAxis("SteeringWheelRoll") * -90f - myJoystick.localEulerAngles.z);
+        myJoystick.localEulerAngles += Vector3.forward * ((Input.GetAxis("Horizontal") + (Input.GetAxis("SteeringWheelRoll"))) * -90f);
 
+        //Passing the turn data to Unit
         MyUnit.JoystickRotate(myJoystick, gameObject.transform, MyModel.transform, new Vector3(0, 0, 0), 2, true);
 
         //Roll the player object back to reduce motion sickness

@@ -42,6 +42,7 @@ public class WeaponSwitchTemp : MonoBehaviour
                 CurrentLeftWeapon = 0;
             }
             LeftWeapons[CurrentLeftWeapon].SetActive(true);
+            LeftWeapons[CurrentLeftWeapon].GetComponent<Gun>().DetermineSlot();
         }
         if (Input.GetButtonDown("R2") || Input.GetKeyDown(KeyCode.C)) 
         {

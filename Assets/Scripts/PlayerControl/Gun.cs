@@ -47,26 +47,7 @@ public class Gun : MonoBehaviour
         Unit CheckingOwner = GameManager.instance.CheckMyUnit(gameObject).GetComponent<Unit>();
         Owner = CheckingOwner;
 
-        //Checking if weapon is one left or right and determine control based on that
-        if (Owner != null) 
-        {
-            Vector2 a = new Vector2(transform.position.x, transform.position.z);
-            Vector2 b = new Vector2(Owner.transform.position.x, Owner.transform.position.z);
-            Vector2 c = b + new Vector2(Owner.transform.forward.x, Owner.transform.forward.z);
-            float CrossProduct = Vector3.Cross(a - b, c - b).z;
-            if (CrossProduct > 0)
-            {
-                MySlot = Slot.Right;
-            }
-            else if (CrossProduct < 0)
-            {
-                MySlot = Slot.Left;
-            }
-            else
-            {
-                MySlot = Slot.Mid;
-            }
-        }
+        DetermineSlot();
 
         //Add me to Owner WeaponList
         if (!Owner.MyWeapons.Contains(this)) 
@@ -123,6 +104,30 @@ public class Gun : MonoBehaviour
                 StartCoroutine(Fire(i * BurstCD));
             }
             Cooldown = CooldownMax;
+        }
+    }
+
+    public void DetermineSlot() 
+    {
+        //Checking if weapon is one left or right and determine control based on that
+        if (Owner != null)
+        {
+            Vector2 a = new Vector2(transform.position.x, transform.position.z);
+            Vector2 b = new Vector2(Owner.transform.position.x, Owner.transform.position.z);
+            Vector2 c = b + new Vector2(Owner.transform.forward.x, Owner.transform.forward.z);
+            float CrossProduct = Vector3.Cross(a - b, c - b).z;
+            if (CrossProduct > 0)
+            {
+                MySlot = Slot.Right;
+            }
+            else if (CrossProduct < 0)
+            {
+                MySlot = Slot.Left;
+            }
+            else
+            {
+                MySlot = Slot.Mid;
+            }
         }
     }
 }
