@@ -787,15 +787,16 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 71613606}
-  m_LocalRotation: {x: -0.08715578, y: -0, z: -0, w: 0.9961947}
-  m_LocalPosition: {x: -57.9, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0.5, z: 0, w: 0.8660254}
+  m_LocalPosition: {x: -57.829, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1396353535}
+  - {fileID: 885943051}
   m_Father: {fileID: 1784322331}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -10, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 60, z: 0}
 --- !u!20 &71613608
 Camera:
   m_ObjectHideFlags: 0
@@ -880,7 +881,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 71613606}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2fadf230d1919748a9aa21d40f74619, type: 3}
   m_Name: 
@@ -1344,6 +1345,7 @@ MonoBehaviour:
     type: 3}
   myCurrentShip: {fileID: 0}
   myShipUnit: {fileID: 0}
+  recenterProbe: {fileID: 0}
   HeadInput: {fileID: 0}
 --- !u!4 &230185283
 Transform:
@@ -2536,6 +2538,7 @@ MonoBehaviour:
     type: 3}
   myCurrentShip: {fileID: 0}
   myShipUnit: {fileID: 0}
+  recenterProbe: {fileID: 0}
   HeadInput: {fileID: 0}
 --- !u!4 &775509647
 Transform:
@@ -2910,6 +2913,7 @@ MonoBehaviour:
     type: 3}
   myCurrentShip: {fileID: 0}
   myShipUnit: {fileID: 0}
+  recenterProbe: {fileID: 0}
   HeadInput: {fileID: 0}
 --- !u!4 &834681110
 Transform:
@@ -2992,6 +2996,37 @@ Transform:
   m_Father: {fileID: 1396353535}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &885943050
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 885943051}
+  m_Layer: 0
+  m_Name: RecenterProbe
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &885943051
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 885943050}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 71613607}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &895240960
 GameObject:
   m_ObjectHideFlags: 0
@@ -3001,6 +3036,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 895240961}
+  - component: {fileID: 895240964}
   - component: {fileID: 895240962}
   - component: {fileID: 895240963}
   m_Layer: 0
@@ -3094,7 +3130,16 @@ MonoBehaviour:
     type: 3}
   myCurrentShip: {fileID: 0}
   myShipUnit: {fileID: 0}
+  recenterProbe: {fileID: 885943050}
   HeadInput: {fileID: 71613610}
+--- !u!33 &895240964
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 895240960}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &941462362
 GameObject:
   m_ObjectHideFlags: 0
@@ -3230,6 +3275,7 @@ MonoBehaviour:
     type: 3}
   myCurrentShip: {fileID: 0}
   myShipUnit: {fileID: 0}
+  recenterProbe: {fileID: 0}
   HeadInput: {fileID: 0}
 --- !u!4 &1116977422
 Transform:
@@ -3463,6 +3509,7 @@ MonoBehaviour:
   myShipPrefab: {fileID: 0}
   myCurrentShip: {fileID: 0}
   myShipUnit: {fileID: 0}
+  recenterProbe: {fileID: 0}
   HeadInput: {fileID: 0}
 --- !u!1 &1242415780
 GameObject:
@@ -4060,6 +4107,7 @@ MonoBehaviour:
     type: 3}
   myCurrentShip: {fileID: 0}
   myShipUnit: {fileID: 0}
+  recenterProbe: {fileID: 0}
   HeadInput: {fileID: 0}
 --- !u!4 &1578071945
 Transform:
@@ -4681,7 +4729,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1784322330}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: -0.5, z: 0, w: 0.8660254}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4689,7 +4737,7 @@ Transform:
   - {fileID: 71613607}
   m_Father: {fileID: 1865497985}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -60, z: 0}
 --- !u!1 &1787764551
 GameObject:
   m_ObjectHideFlags: 0
@@ -4771,6 +4819,8 @@ GameObject:
   - component: {fileID: 1865497985}
   - component: {fileID: 1865497987}
   - component: {fileID: 1865497986}
+  - component: {fileID: 1865497989}
+  - component: {fileID: 1865497988}
   m_Layer: 0
   m_Name: XR Origin (XR Rig)
   m_TagString: TeamA
@@ -4828,6 +4878,56 @@ MonoBehaviour:
   m_CameraFloorOffsetObject: {fileID: 1784322330}
   m_RequestedTrackingOriginMode: 2
   m_CameraYOffset: 1.1176
+--- !u!23 &1865497988
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1865497984}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 7390553463975553142, guid: 7ab6f3b0fd1a6ba41b2a47766c16613f, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1865497989
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1865497984}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1001 &1908062111
 PrefabInstance:
   m_ObjectHideFlags: 0

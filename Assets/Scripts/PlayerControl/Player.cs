@@ -21,6 +21,9 @@ public class Player : MonoBehaviour
     public Unit myShipUnit;
 
     [SerializeField]
+    GameObject recenterProbe;
+
+    [SerializeField]
     UnityEngine.InputSystem.XR.TrackedPoseDriver HeadInput;
 
     void Start()
@@ -158,11 +161,13 @@ public class Player : MonoBehaviour
 
     public void Recenter()
     {
-        XROrigin xrorigin = GetComponentInChildren<XROrigin>();
-        //xrorigin.MoveCameraToWorldLocation(myShipUnit.mount.transform.position);
-        xrorigin.transform.localPosition = new Vector3();
-        myCamera.transform.parent.localPosition = myCamera.transform.localPosition * (-1);
-        xrorigin.MatchOriginUpCameraForward(myShipUnit.mount.transform.up, myShipUnit.mount.transform.forward);
+        Transform cameraOffset = myCamera.transform.parent;
+        cameraOffset.localRotation = Quaternion.Inverse(myCamera.transform.localRotation);
+        recenterProbe.transform.localPosition = new Vector3();
+        recenterProbe.transform.parent = cameraOffset.parent;
+        cameraOffset.localPosition = -recenterProbe.transform.localPosition;
+        recenterProbe.transform.parent = myCamera.transform;
+        Debug.Log("attempted");
     }
 
     GameObject CheckTopParent(GameObject Checking)

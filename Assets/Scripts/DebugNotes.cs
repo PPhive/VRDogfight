@@ -23,7 +23,7 @@ public class DebugNotes : MonoBehaviour
         message += "Tracked objects:\n";
         foreach (GameObject currentobject in trackedObjects) 
         {
-            message += currentobject.name + ": " + currentobject.transform.localPosition + "\n" ;
+            message += currentobject.name + ": " + currentobject.transform.localPosition + " " + currentobject.transform.localEulerAngles + "\n";
         }
 
         myText.text = (message);
