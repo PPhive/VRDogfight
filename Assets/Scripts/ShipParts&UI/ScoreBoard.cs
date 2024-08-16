@@ -22,7 +22,7 @@ public class ScoreBoard : MonoBehaviour
     {
         if (!gameOver)
         {
-            if (Mathf.Max(GameManager.instance.CurrentGame.teams[1].score, GameManager.instance.CurrentGame.teams[2].score) >= 10) 
+            if (Mathf.Max(GameManager.instance.CurrentGame.teams[1].score, GameManager.instance.CurrentGame.teams[2].score) >= 15) 
             {
                 finalScore = new Vector2(GameManager.instance.CurrentGame.teams[1].score, GameManager.instance.CurrentGame.teams[2].score);
                 gameOver = true;
@@ -31,9 +31,9 @@ public class ScoreBoard : MonoBehaviour
             {
                 myText.fontSize = 36;
                 myText.text =
-                "Best of 10\n" +
+                "Best of " + 15 + "\n" +
                 "BlueTeam   VS   RedTeam\n" +
-                GameManager.instance.CurrentGame.teams[1].score + "          " + GameManager.instance.CurrentGame.teams[2].score + "\n";
+                GameManager.instance.CurrentGame.teams[1].score + "             " + GameManager.instance.CurrentGame.teams[2].score + "\n";
             }
         }
         else 

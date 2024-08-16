@@ -36,6 +36,12 @@ public class EnemyBasic : MonoBehaviour
     [SerializeField]
     Vector3 Destination;
 
+    [SerializeField]
+    float fireTimer;
+
+    [SerializeField]
+    LaserFX myLaser;
+
     void Start()
     {
         DriftSpeed = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), Random.Range(-10f, 10f));
@@ -78,21 +84,31 @@ public class EnemyBasic : MonoBehaviour
             }
             else 
             {
-                Destination = myTarget.transform.position + myTarget.myRb.velocity * Mathf.Min(Vector3.Distance(myTarget.transform.position,transform.position) / 10, 4f);
+                Destination = myTarget.transform.position + myTarget.myRb.velocity * 1f;
+
+                if (Destination != null)
+                {
+                    laserToward(Destination);
+                }
+
+                //Destination = myTarget.transform.position + myTarget.myRb.velocity * Mathf.Min(Vector3.Distance(myTarget.transform.position,transform.position) / 10, 4f);
                 //Debug.Log(Mathf.Min(Vector3.Distance(myTarget.transform.position, transform.position) / 40, 5f));
+
                 //Tries to attack player
                 RaycastHit Hit;
-                if (Physics.SphereCast(transform.position + transform.TransformDirection(Vector3.forward), 5, transform.TransformDirection(Vector3.forward), out Hit, MyUnit.maxSpeed * 3))
+                bool sphereCast = Physics.SphereCast(transform.position + transform.TransformDirection(Vector3.forward), 5, transform.TransformDirection(Vector3.forward), out Hit, MyUnit.maxSpeed * 4);
+                if ((sphereCast && Hit.transform.gameObject.tag == myTarget.tag) || FindMinimumDistance(Destination, transform.position, transform.position + transform.forward * 10) < 5)
                 {
-                    if (Hit.transform.gameObject.tag == myTarget.tag)
+                    //MyUnit.AttemptToFireGuns(Gun.Slot.Left);
+                    fireTimer = 1;
+
+                    //Add function that makes enemy chase target down after successful fire.
+
+                    if (MyUnit.myLockOnReciever != null && MyUnit.myLockOnReciever.List.Count > 0)
                     {
-                        MyUnit.AttemptToFireGuns(Gun.Slot.Left);
-                        if (MyUnit.myLockOnReciever != null && MyUnit.myLockOnReciever.List.Count > 0) 
+                        if (MyUnit.myLockOnReciever.List[0].LockOnProgress >= 100)
                         {
-                            if (MyUnit.myLockOnReciever.List[0].LockOnProgress >= 100) 
-                            {
-                                MyUnit.AttemptToFireGuns(Gun.Slot.Right);
-                            }
+                            MyUnit.AttemptToFireGuns(Gun.Slot.Right);
                         }
                     }
                 }
@@ -115,6 +131,14 @@ public class EnemyBasic : MonoBehaviour
         Roomba();
         MyUnit.JoystickRotate(myJoystick.transform,transform, myModel.transform, new Vector3() ,1, false);
         MyUnit.targetVelocity = transform.forward * MyUnit.maxSpeed * 1f;
+
+
+        //Fire gun if fire timer isn't 0
+        if (fireTimer > 0)
+        {
+            fireTimer -= Time.deltaTime;
+            MyUnit.AttemptToFireGuns(Gun.Slot.Left);
+        }
     }
 
     // Update is called once per frame
@@ -134,11 +158,7 @@ public class EnemyBasic : MonoBehaviour
         else
         {
             //Attacking
-
-
-
-
-                float Randomizer = Random.Range(0f, 1f);
+            float Randomizer = Random.Range(0f, 1f);
             if (Randomizer < 0.3f && myTarget != null)
             {
                 //Attack SameTarget
@@ -202,7 +222,7 @@ public class EnemyBasic : MonoBehaviour
     private void Roomba() 
     {
         RaycastHit Hit;
-        if (Physics.SphereCast(transform.position + transform.TransformDirection(Vector3.forward), 3, transform.TransformDirection(Vector3.forward), out Hit, MyUnit.maxSpeed * 2))
+        if (Physics.SphereCast(transform.position + transform.TransformDirection(Vector3.forward), 3, transform.TransformDirection(Vector3.forward), out Hit, MyUnit.maxSpeed * 4))
         {
             if (Hit.transform.gameObject.tag == "Terrain") 
             {
@@ -219,5 +239,73 @@ public class EnemyBasic : MonoBehaviour
     private void OrganicDrift()
     {
         myJoystick.transform.Rotate(new Vector3(DriftSpeed.x * Mathf.Sin(Time.realtimeSinceStartup), DriftSpeed.y * Mathf.Sin(Time.realtimeSinceStartup), DriftSpeed.z * Mathf.Sin(Time.realtimeSinceStartup)), Space.Self);
+    }
+
+    public Vector3 GetTargetPosition(Vector3 targetPos, Vector3 chaserPos, Vector3 targetVelocity, float chaserSpeed, float range)
+    {
+        // Calculate the relative position and velocity
+        Vector3 relativePos = targetPos - chaserPos;
+        Vector3 relativeVelocity = targetVelocity;
+
+        // Calculate the coefficients of the quadratic equation
+        float a = relativeVelocity.sqrMagnitude - chaserSpeed * chaserSpeed;
+        float b = 2 * Vector3.Dot(relativePos, relativeVelocity);
+        float c = relativePos.sqrMagnitude - range * range;
+
+        // Solve the quadratic equation for t
+        float discriminant = b * b - 4 * a * c;
+
+        // Check if the discriminant is non-negative (a solution exists)
+        if (discriminant < 0)
+        {
+            // No real solution exists; just head towards the target's current position
+            return targetPos;
+        }
+
+        // Calculate the two possible times
+        float t1 = (-b + Mathf.Sqrt(discriminant)) / (2 * a);
+        float t2 = (-b - Mathf.Sqrt(discriminant)) / (2 * a);
+
+        // Choose the smallest positive time
+        float t = Mathf.Min(t1, t2);
+
+        if (t < 0)
+        {
+            // No valid intercept time; move towards current target position
+            return targetPos;
+        }
+
+        // Calculate the intercept point
+        Vector3 interceptPoint = targetPos + targetVelocity * t;
+
+        return interceptPoint;
+    }
+
+    void laserToward(Vector3 laserTarget) 
+    {
+        if (myLaser != null && myLaser.gameObject.activeInHierarchy) 
+        {
+            myLaser.TargetPos = laserTarget;
+        }
+    }
+
+    public float FindMinimumDistance(Vector3 P, Vector3 A, Vector3 B)
+    {
+        // Direction vector of the line AB
+        Vector3 d = B - A;
+
+        // Vector from A to the point P
+        Vector3 AP = P - A;
+
+        // Projection length of AP onto d
+        float projectionLength = Vector3.Dot(AP, d.normalized);
+
+        // Closest point on the line AB to the point P
+        Vector3 closestPoint = A + projectionLength * d.normalized;
+
+        // Minimum distance between the point P and the line AB
+        float distance = Vector3.Distance(P, closestPoint);
+
+        return distance;
     }
 }
