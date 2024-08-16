@@ -78,7 +78,8 @@ public class EnemyBasic : MonoBehaviour
             }
             else 
             {
-                Destination = myTarget.transform.position + myTarget.myRb.velocity * 1f;
+                Destination = myTarget.transform.position + myTarget.myRb.velocity * Mathf.Min(Vector3.Distance(myTarget.transform.position,transform.position) / 10, 4f);
+                //Debug.Log(Mathf.Min(Vector3.Distance(myTarget.transform.position, transform.position) / 40, 5f));
                 //Tries to attack player
                 RaycastHit Hit;
                 if (Physics.SphereCast(transform.position + transform.TransformDirection(Vector3.forward), 5, transform.TransformDirection(Vector3.forward), out Hit, MyUnit.maxSpeed * 3))
@@ -124,7 +125,7 @@ public class EnemyBasic : MonoBehaviour
 
     private void StateSelect() 
     {
-        if (Random.Range(0f, 1f) < 0.5f)
+        if (Random.Range(0f, 1f) < 0.3f)
         {
             //Roaming
             StateTimer = Random.Range(1f, 2f);

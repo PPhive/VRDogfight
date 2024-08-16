@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class Team
@@ -94,7 +95,10 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        
+        if (Input.GetKey(KeyCode.Escape)) 
+        {
+            backToTitle();
+        }
     }
 
     private int GenerateSeed() 
@@ -110,14 +114,17 @@ public class GameManager : MonoBehaviour
 
     public void UnitDestroyed(Player Destroyer, Unit Destroyed) 
     {
-        Debug.Log(Destroyer + " destroyed " + Destroyed!);
-        if (Destroyer.myTeam == CurrentGame.teams[0])
+        if (Destroyed.gameObject != null) 
         {
-            Debug.Log(Destroyed + " got destroyed by neutral unit!");
-        }
-        else 
-        {
-            Scoring(1, Destroyer);
+            Debug.Log(Destroyer + " destroyed " + Destroyed!);
+            if (Destroyer.myTeam == CurrentGame.teams[0])
+            {
+                Debug.Log(Destroyed + " got destroyed by neutral unit!");
+            }
+            else
+            {
+                Scoring(1, Destroyer);
+            }
         }
     }
 
@@ -130,5 +137,10 @@ public class GameManager : MonoBehaviour
                 thisTeam.score += Score;
             }
         }
+    }
+
+    public void backToTitle() 
+    {
+        SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
 }

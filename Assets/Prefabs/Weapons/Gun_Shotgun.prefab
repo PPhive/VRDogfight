@@ -826,10 +826,10 @@ MonoBehaviour:
   BarrelOffset: {fileID: 6352341868744985100}
   GunBlaze: {fileID: 6352341869936110422}
   MySound: {fileID: 6239648143818147645}
-  Spread: 1.2
+  Spread: 2
   Burst: 10
   BurstCD: 0
-  CooldownMax: 0.5
+  CooldownMax: 1
   Cooldown: 0
 --- !u!82 &6239648143818147645
 AudioSource:
