@@ -11,6 +11,7 @@ public class HP : MonoBehaviour
     public float HitPoints = 1;
     public void TakeDamage(float Dmg) 
     {
+        HitPoints -= Dmg;
         if (!destroyed) 
         {
             if (HitPoints <= 0)
@@ -35,7 +36,5 @@ public class HP : MonoBehaviour
                 Debug.Log("I shouldve been destroyed");
             }
         }
-        HitPoints -= Dmg;
-        
     }
 }

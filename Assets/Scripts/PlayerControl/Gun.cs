@@ -112,6 +112,7 @@ public class Gun : MonoBehaviour
         //Checking if weapon is one left or right and determine control based on that
         if (Owner != null)
         {
+            /*
             Vector2 a = new Vector2(transform.position.x, transform.position.z);
             Vector2 b = new Vector2(Owner.transform.position.x, Owner.transform.position.z);
             Vector2 c = b + new Vector2(Owner.transform.forward.x, Owner.transform.forward.z);
@@ -121,6 +122,21 @@ public class Gun : MonoBehaviour
                 MySlot = Slot.Right;
             }
             else if (CrossProduct < 0)
+            {
+                MySlot = Slot.Left;
+            }
+            else
+            {
+                MySlot = Slot.Mid;
+            }
+            */
+
+            if (transform.parent.name == "WeaponMountRight")
+            {
+                MySlot = Slot.Right;
+                Debug.Log(transform.parent.name);
+            }
+            else if (transform.parent.name == "WeaponMountLeft")
             {
                 MySlot = Slot.Left;
             }

@@ -6369,7 +6369,7 @@ MonoBehaviour:
   GunBlaze: {fileID: 5588808142980218052}
   MySound: {fileID: -5727425948808650125}
   Spread: 2
-  Burst: 4
+  Burst: 2
   BurstCD: 0.2
   CooldownMax: 5
   Cooldown: 0
@@ -6481,7 +6481,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 3, y: 3, z: 13}
-  m_Center: {x: 0, y: 0, z: 3.13}
+  m_Center: {x: 0, y: -1.33, z: 3.13}
 --- !u!1 &5588808143549408791
 GameObject:
   m_ObjectHideFlags: 0

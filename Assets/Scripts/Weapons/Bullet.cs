@@ -64,7 +64,7 @@ public class Bullet : MonoBehaviour
             if (other.gameObject.tag != Owner.tag && other.gameObject.tag != "default")
             {
                 //Debug.Log("Hit Landed with " + gameObject + ". Dealing " + MyProjectile.damage);
-                Unit TargetUnit = FindParentScript(other.transform);
+                Unit TargetUnit = FindParentUnit(other.transform);
                 if (TargetUnit != null)
                 {
                     if (TargetUnit.gameObject.GetComponent<LockOnAble>() != null && Owner.myShipUnit.myLockOnReciever != null && TargetUnit.gameObject.GetComponent<LockOnAble>().isActiveAndEnabled)
@@ -118,7 +118,7 @@ public class Bullet : MonoBehaviour
         } 
     }
 
-    Unit FindParentScript(Transform other) 
+    public static Unit FindParentUnit(Transform other) 
     {
         if (other.GetComponent<Unit>() != null)
         {
@@ -126,12 +126,12 @@ public class Bullet : MonoBehaviour
         }
         else if (other.transform.parent != null)
         {
-            return FindParentScript(other.parent);
+            return FindParentUnit(other.parent);
         }
         return null;
     }
 
-    //To prevent overpen, bullet uses this method to ensure a hit.
+    //To prevent overpenetration, bullet uses this method to ensure a hit.
     void SphereCastAdvance() 
     {
         RaycastHit[] HitsArray = Physics.SphereCastAll(transform.position, transform.lossyScale.magnitude, transform.TransformDirection(Vector3.forward), MyRb.velocity.magnitude * Time.fixedDeltaTime);

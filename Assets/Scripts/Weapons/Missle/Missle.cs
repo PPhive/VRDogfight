@@ -64,6 +64,10 @@ public class Missle : MonoBehaviour
             }
             TargetPastPos = Target.transform.position;
         }
+        else
+        {
+            //Proxmity detection?
+        }
         MyRigidBody.velocity = transform.forward * Speed;
         FlightTimer += Time.fixedDeltaTime;
     }
