@@ -26,6 +26,11 @@ public class SpaceShipControl : MonoBehaviour
     public UnityEngine.InputSystem.XR.TrackedPoseDriver HeadInput;
     Vector3 turn;
 
+    [SerializeField]
+    float turnMultiplier;
+    [SerializeField]
+    bool simple;
+
     void Start()
     {
         MyUnit = GetComponent<Unit>();
@@ -34,6 +39,8 @@ public class SpaceShipControl : MonoBehaviour
 
         telemetry = GetComponent<Telemetry>();
         simRacingStudio = GetComponent<SimRacingStudio>();
+
+        simple = true;
     }
 
     // Update is called once per frame
@@ -74,13 +81,46 @@ public class SpaceShipControl : MonoBehaviour
             HeadInput.enabled = true;
         }
 
-        myJoystick.localEulerAngles = myCamera.transform.localEulerAngles;
-        myJoystick.localEulerAngles += Vector3.forward * ((Input.GetAxis("Horizontal") + (Input.GetAxis("SteeringWheelRoll"))) * -90f);
+        if (!simple)
+        {
+            myJoystick.localEulerAngles = myCamera.transform.localEulerAngles;
+            myJoystick.localEulerAngles += Vector3.forward * ((Input.GetAxis("Horizontal") + (Input.GetAxis("SteeringWheelRoll"))) * -90f);
+        }
+        else 
+        {
+            myJoystick.localEulerAngles = myCamera.transform.localEulerAngles;
+            float globalpitch = 0;
+            Vector3 myUnitfront = MyUnit.transform.position + MyUnit.transform.forward;
+            globalpitch = -Mathf.Atan2
+                (
+                myUnitfront.y - MyUnit.transform.position.y,
+                Vector2.Distance(new Vector2(myUnitfront.x, myUnitfront.z), new Vector2(MyUnit.transform.position.x, MyUnit.transform.position.z))
+                ) / -3.14f * 180;
+
+
+            if (Mathf.Abs(globalpitch) >= 30f) // if the pitch is too high or low
+            {
+                Debug.Log("global pitch is " + globalpitch + " joystick euler x is " + myJoystick.localEulerAngles.x);
+                if (globalpitch * Methods.i.Bound180(myJoystick.localEulerAngles.x) < 0) 
+                {
+                    myJoystick.localEulerAngles -= Vector3.right * Methods.i.Bound180(myJoystick.localEulerAngles.x) * ((Mathf.Abs(globalpitch) - 30) / 15);
+                }     
+            }
+
+            float simpleRoll = Mathf.Clamp(Methods.i.Bound180(myJoystick.transform.localEulerAngles.y) * turnMultiplier / 4, -MyUnit.maxTurnspeed / 4, MyUnit.maxTurnspeed / 4);
+            MyUnit.transform.localEulerAngles -= MyUnit.transform.localEulerAngles.z * Vector3.forward;
+            MyUnit.transform.localEulerAngles -= simpleRoll * Vector3.forward;
+        }
+
+        if (!MouseOverride) 
+        {
+            myJoystick.localEulerAngles += new Vector3(10, 0, 0);
+        }
 
         //Passing the turn data to Unit
-        MyUnit.JoystickRotate(myJoystick, gameObject.transform, MyModel.transform, new Vector3(0, 0, 0), 2, true);
+        MyUnit.JoystickRotate(myJoystick, gameObject.transform, MyModel.transform, new Vector3(0, 0, 0), turnMultiplier);
 
         //Roll the player object back to reduce motion sickness
-        myCamera.transform.parent.transform.parent.transform.localEulerAngles = Vector3.forward * MyUnit.Bound180(MyModel.transform.localEulerAngles.z) * (-0.2f);
+        myCamera.transform.parent.transform.parent.transform.localEulerAngles = Vector3.forward * Methods.i.Bound180(MyModel.transform.localEulerAngles.z) * (-0.2f);
     }
 }
