@@ -86,7 +86,6 @@ public class Player : MonoBehaviour
                 {
                     if (Input.GetKeyDown(KeyCode.L))
                     {
-                        myShipUnit.lasthitFrom = this;
                         myShipUnit.Hit(99999);
                     }
 

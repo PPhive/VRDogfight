@@ -46,9 +46,27 @@ public class SpaceShipControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         if (Input.GetKeyDown(KeyCode.T)) 
         {
             MyUnit.myHP.TakeDamage(999999);
+        }
+        */
+
+        if (Input.GetKeyDown(KeyCode.F)) 
+        {
+            if (GetComponent<SpaceShipControl>() != null)
+            {
+                SpaceShipControl mySpaceShipControl = GetComponent<SpaceShipControl>();
+                if (mySpaceShipControl.simple)
+                {
+                    mySpaceShipControl.simple = false;
+                }
+                else 
+                {
+                    mySpaceShipControl.simple = true;
+                }
+            }
         }
 
         MyUnit.targetVelocity = transform.forward * MyUnit.maxSpeed * Throttle;
@@ -97,24 +115,32 @@ public class SpaceShipControl : MonoBehaviour
                 Vector2.Distance(new Vector2(myUnitfront.x, myUnitfront.z), new Vector2(MyUnit.transform.position.x, MyUnit.transform.position.z))
                 ) / -3.14f * 180;
 
-
-            if (Mathf.Abs(globalpitch) >= 30f) // if the pitch is too high or low
+            //if the pitch is too high or low, slowly disable pitching
+            if (Mathf.Abs(globalpitch) >= 30f)
             {
                 Debug.Log("global pitch is " + globalpitch + " joystick euler x is " + myJoystick.localEulerAngles.x);
                 if (globalpitch * Methods.i.Bound180(myJoystick.localEulerAngles.x) < 0) 
                 {
-                    myJoystick.localEulerAngles -= Vector3.right * Methods.i.Bound180(myJoystick.localEulerAngles.x) * ((Mathf.Abs(globalpitch) - 30) / 15);
+                    myJoystick.localEulerAngles -= Vector3.right * Methods.i.Bound180(myJoystick.localEulerAngles.x) * ((Mathf.Abs(globalpitch) - 30) / 20);
                 }     
             }
 
-            float simpleRoll = Mathf.Clamp(Methods.i.Bound180(myJoystick.transform.localEulerAngles.y) * turnMultiplier / 4, -MyUnit.maxTurnspeed / 4, MyUnit.maxTurnspeed / 4);
-            MyUnit.transform.localEulerAngles -= MyUnit.transform.localEulerAngles.z * Vector3.forward;
-            MyUnit.transform.localEulerAngles -= simpleRoll * Vector3.forward;
-        }
+            //Automatically rolling the ship back upright
+            if (Methods.i.Bound180(MyUnit.transform.localEulerAngles.z) != 0) 
+            {
+                float unitZ = Methods.i.Bound180(MyUnit.transform.localEulerAngles.z);
+                float unitZSign = 0;
+                if (unitZ != 0) 
+                {
+                    unitZSign = unitZ / Mathf.Abs(unitZ);
+                }
 
-        if (!MouseOverride) 
-        {
-            myJoystick.localEulerAngles += new Vector3(10, 0, 0);
+                myJoystick.localEulerAngles = new Vector3(
+                    myJoystick.localEulerAngles.x,
+                    myJoystick.localEulerAngles.y,
+                    -unitZ * 0.5f
+                    );
+            }
         }
 
         //Passing the turn data to Unit

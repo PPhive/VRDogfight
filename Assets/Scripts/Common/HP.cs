@@ -9,6 +9,7 @@ public class HP : MonoBehaviour
     public bool destroyed;
 
     public float HitPoints = 1;
+
     public void TakeDamage(float Dmg) 
     {
         HitPoints -= Dmg;

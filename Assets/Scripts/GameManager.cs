@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
         if (Destroyed.gameObject != null) 
         {
             Debug.Log(Destroyer + " destroyed " + Destroyed!);
-            if (Destroyer.myTeam == CurrentGame.teams[0])
+            if (Destroyer == null || Destroyer.myTeam == CurrentGame.teams[0])
             {
                 Debug.Log(Destroyed + " got destroyed by neutral unit!");
             }

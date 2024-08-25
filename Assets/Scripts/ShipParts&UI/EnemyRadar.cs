@@ -52,10 +52,13 @@ public class EnemyRadar : MonoBehaviour
             myConeTip.localPosition = (Mathf.Sin(Time.timeSinceLevelLoad * 6.28f) * 0.05f - 0.2f) * Vector3.forward;
 
             MyText.SetActive(true);
-            GameObject mainCamera = myUnit.myPlayer.transform.GetChild(0).GetChild(0).gameObject;
-            Vector3 targetPosition = transform.position + mainCamera.transform.rotation * Vector3.forward;
-            Vector3 upDirection = mainCamera.transform.rotation * Vector3.up;
-            MyText.transform.LookAt(targetPosition, upDirection);
+            if (myUnit.myPlayer != null) 
+            {
+                GameObject mainCamera = myUnit.myPlayer.transform.GetChild(0).GetChild(0).gameObject;
+                Vector3 targetPosition = transform.position + mainCamera.transform.rotation * Vector3.forward;
+                Vector3 upDirection = mainCamera.transform.rotation * Vector3.up;
+                MyText.transform.LookAt(targetPosition, upDirection);
+            }
         }
         else 
         {

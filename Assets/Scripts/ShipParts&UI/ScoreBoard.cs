@@ -7,7 +7,7 @@ public class ScoreBoard : MonoBehaviour
 {
     bool gameOver;
     [SerializeField]
-    TextMeshProUGUI myText;
+    TextMeshPro myText;
     [SerializeField]
     float timerToTitle;
     Vector2 finalScore;
@@ -29,7 +29,7 @@ public class ScoreBoard : MonoBehaviour
             }
             else
             {
-                myText.fontSize = 20;
+                myText.fontSize = 15;
                 myText.text =
                 "Best of " + 15 + "\n" +
                 "BlueTeam   VS   RedTeam\n" +

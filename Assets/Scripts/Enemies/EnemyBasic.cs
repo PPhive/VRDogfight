@@ -152,7 +152,7 @@ public class EnemyBasic : MonoBehaviour
         if (Random.Range(0f, 1f) < 0.3f)
         {
             //Roaming
-            StateTimer = Random.Range(1f, 2f);
+            StateTimer = Random.Range(2f, 3f);
             myState = state.Roaming;
         }
         else
