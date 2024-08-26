@@ -413,7 +413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d9a20784390dad41a789986a5face4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Owner: {fileID: 599911063565726103}
+  myUnit: {fileID: 599911063565726103}
   Explosion: {fileID: 2150040323103579151, guid: 7f1279dda1d4d1b46bcbc6ddc21bd040,
     type: 3}
   destroyed: 0
@@ -1643,7 +1643,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4171135170573842333
 Transform:
   m_ObjectHideFlags: 0

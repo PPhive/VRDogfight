@@ -121,7 +121,7 @@ public class SpaceShipControl : MonoBehaviour
             //if the pitch is too high or low, slowly disable pitching
             if (Mathf.Abs(globalpitch) >= 30f)
             {
-                Debug.Log("global pitch is " + globalpitch + " joystick euler x is " + myJoystick.localEulerAngles.x);
+                //Debug.Log("global pitch is " + globalpitch + " joystick euler x is " + myJoystick.localEulerAngles.x);
                 if (globalpitch * Methods.i.Bound180(myJoystick.localEulerAngles.x) < 0) 
                 {
                     myJoystick.localEulerAngles -= Vector3.right * Methods.i.Bound180(myJoystick.localEulerAngles.x) * ((Mathf.Abs(globalpitch) - 30) / 20);

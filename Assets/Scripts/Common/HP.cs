@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class HP : MonoBehaviour
 {
-    public Unit Owner;
+    public Unit myUnit;
     public GameObject Explosion;
     public bool destroyed;
-
     public float HitPoints = 1;
 
     public void TakeDamage(float Dmg) 
@@ -25,13 +24,13 @@ public class HP : MonoBehaviour
 
                 BroadcastMessage("RemoveMyself");
 
-                if (Owner.myPlayer != null)
+                if (myUnit.myPlayer != null)
                 {
                     transform.BroadcastMessage("UnMount");
-                    Owner.myPlayer = null;
+                    myUnit.myPlayer = null;
                 }
 
-                GameManager.instance.UnitDestroyed(Owner.lasthitFrom, Owner);
+                GameManager.instance.UnitDestroyed(myUnit.lasthitFrom, myUnit);
                 destroyed = true;
                 Destroy(gameObject);
                 Debug.Log("I shouldve been destroyed");
