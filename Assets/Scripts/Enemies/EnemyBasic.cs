@@ -123,9 +123,6 @@ public class EnemyBasic : MonoBehaviour
             StateTimer = 0;
         }
 
-
-
-
         myJoystick.transform.LookAt(Destination);
         OrganicDrift();
         Roomba();
@@ -139,12 +136,6 @@ public class EnemyBasic : MonoBehaviour
             fireTimer -= Time.deltaTime;
             MyUnit.AttemptToFireGuns(Gun.Slot.Left);
         }
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-
     }
 
     private void StateSelect() 
@@ -212,12 +203,6 @@ public class EnemyBasic : MonoBehaviour
             }
         }
     }
-
-    private void SimulateGunPress() 
-    {
-    
-    }
-
 
     private void Roomba() 
     {

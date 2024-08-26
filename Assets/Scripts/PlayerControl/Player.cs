@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     public Unit myShipUnit;
 
     [SerializeField]
-    GameObject recenterProbe;
+    XROrigin myXROrigin;
 
     [SerializeField]
     UnityEngine.InputSystem.XR.TrackedPoseDriver HeadInput;
@@ -126,7 +126,7 @@ public class Player : MonoBehaviour
             }
             else
             {
-                myCurrentShip = CheckTopParent(gameObject);
+                myCurrentShip = Methods.i.CheckTopParent(gameObject);
             }
             myCurrentShip.name = myCurrentShip.name + "-" + gameObject.name;
             myShipUnit = myCurrentShip.GetComponent<Unit>();
@@ -160,25 +160,14 @@ public class Player : MonoBehaviour
 
     public void Recenter()
     {
+        
         Transform cameraOffset = myCamera.transform.parent;
+        Transform XROrigin = cameraOffset.parent;
         cameraOffset.localRotation = Quaternion.Inverse(myCamera.transform.localRotation);
-        recenterProbe.transform.localPosition = new Vector3();
-        recenterProbe.transform.parent = cameraOffset.parent;
-        cameraOffset.localPosition = -recenterProbe.transform.localPosition;
-        recenterProbe.transform.parent = myCamera.transform;
-        Debug.Log("attempted");
-    }
-
-    GameObject CheckTopParent(GameObject Checking)
-    {
-        if (Checking.transform.parent != null)
-        {
-            return CheckTopParent(CheckTopParent(Checking.transform.parent.gameObject));
-        }
-        else
-        {
-            return Checking;
-        }
+        cameraOffset.localPosition = new Vector3();
+        cameraOffset.parent = null;
+        cameraOffset.transform.localPosition -= myCamera.transform.position - cameraOffset.transform.position;
+        cameraOffset.parent = XROrigin;
     }
 
     IEnumerator RecenterAfterOneFrame()

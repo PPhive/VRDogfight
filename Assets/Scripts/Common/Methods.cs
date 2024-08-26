@@ -17,6 +17,18 @@ public class Methods : MonoBehaviour
         }
     }
 
+    public GameObject CheckTopParent(GameObject Checking)
+    {
+        if (Checking.transform.parent != null)
+        {
+            return CheckTopParent(CheckTopParent(Checking.transform.parent.gameObject));
+        }
+        else
+        {
+            return Checking;
+        }
+    }
+
     public float Bound180(float eulerZ)
     {
         if (eulerZ < -180)

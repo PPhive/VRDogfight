@@ -99,14 +99,17 @@ public class SpaceShipControl : MonoBehaviour
             HeadInput.enabled = true;
         }
 
+        Quaternion relativeRotation = Quaternion.Inverse(myCamera.transform.rotation) * MyUnit.transform.rotation;
+        Vector3 relativeEulerAngles = relativeRotation.eulerAngles;
+        myJoystick.localEulerAngles = -relativeEulerAngles;
+
         if (!simple)
         {
-            myJoystick.localEulerAngles = myCamera.transform.localEulerAngles;
+            
             myJoystick.localEulerAngles += Vector3.forward * ((Input.GetAxis("Horizontal") + (Input.GetAxis("SteeringWheelRoll"))) * -90f);
         }
         else 
-        {
-            myJoystick.localEulerAngles = myCamera.transform.localEulerAngles;
+        {        
             float globalpitch = 0;
             Vector3 myUnitfront = MyUnit.transform.position + MyUnit.transform.forward;
             globalpitch = -Mathf.Atan2

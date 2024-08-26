@@ -111,7 +111,7 @@ public class Bullet : MonoBehaviour
                 }
             }
 
-            if (other.attachedRigidbody == null || other.attachedRigidbody.gameObject != Owner.myShipUnit.gameObject)
+            if (other.attachedRigidbody == null || (Owner.myShipUnit != null && other.attachedRigidbody.gameObject != Owner.myShipUnit.gameObject))
             {
                 Disappear();
             }

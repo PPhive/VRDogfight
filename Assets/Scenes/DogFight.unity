@@ -984,7 +984,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 71613606}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2fadf230d1919748a9aa21d40f74619, type: 3}
   m_Name: 
@@ -1202,7 +1202,7 @@ MonoBehaviour:
     type: 3}
   myCurrentShip: {fileID: 0}
   myShipUnit: {fileID: 0}
-  recenterProbe: {fileID: 0}
+  myXROrigin: {fileID: 0}
   HeadInput: {fileID: 0}
 --- !u!4 &81659926
 Transform:
@@ -1426,7 +1426,7 @@ MonoBehaviour:
     type: 3}
   myCurrentShip: {fileID: 0}
   myShipUnit: {fileID: 0}
-  recenterProbe: {fileID: 0}
+  myXROrigin: {fileID: 0}
   HeadInput: {fileID: 0}
 --- !u!4 &135274432
 Transform:
@@ -1570,7 +1570,7 @@ MonoBehaviour:
     type: 3}
   myCurrentShip: {fileID: 0}
   myShipUnit: {fileID: 0}
-  recenterProbe: {fileID: 0}
+  myXROrigin: {fileID: 0}
   HeadInput: {fileID: 0}
 --- !u!4 &230185283
 Transform:
@@ -3191,7 +3191,7 @@ MonoBehaviour:
     type: 3}
   myCurrentShip: {fileID: 0}
   myShipUnit: {fileID: 0}
-  recenterProbe: {fileID: 0}
+  myXROrigin: {fileID: 0}
   HeadInput: {fileID: 0}
 --- !u!4 &775509647
 Transform:
@@ -3252,7 +3252,7 @@ MonoBehaviour:
     type: 3}
   myCurrentShip: {fileID: 0}
   myShipUnit: {fileID: 0}
-  recenterProbe: {fileID: 0}
+  myXROrigin: {fileID: 0}
   HeadInput: {fileID: 0}
 --- !u!4 &782975872
 Transform:
@@ -3613,7 +3613,7 @@ MonoBehaviour:
     type: 3}
   myCurrentShip: {fileID: 0}
   myShipUnit: {fileID: 0}
-  recenterProbe: {fileID: 0}
+  myXROrigin: {fileID: 0}
   HeadInput: {fileID: 0}
 --- !u!4 &834681110
 Transform:
@@ -3831,7 +3831,7 @@ MonoBehaviour:
     type: 3}
   myCurrentShip: {fileID: 0}
   myShipUnit: {fileID: 0}
-  recenterProbe: {fileID: 885943050}
+  myXROrigin: {fileID: 1865497987}
   HeadInput: {fileID: 71613610}
 --- !u!33 &895240964
 MeshFilter:
@@ -4072,7 +4072,7 @@ MonoBehaviour:
     type: 3}
   myCurrentShip: {fileID: 0}
   myShipUnit: {fileID: 0}
-  recenterProbe: {fileID: 0}
+  myXROrigin: {fileID: 0}
   HeadInput: {fileID: 0}
 --- !u!4 &1116977422
 Transform:
@@ -4306,7 +4306,7 @@ MonoBehaviour:
   myShipPrefab: {fileID: 0}
   myCurrentShip: {fileID: 0}
   myShipUnit: {fileID: 0}
-  recenterProbe: {fileID: 0}
+  myXROrigin: {fileID: 0}
   HeadInput: {fileID: 0}
 --- !u!1 &1242415780
 GameObject:
@@ -4860,7 +4860,7 @@ MonoBehaviour:
     type: 3}
   myCurrentShip: {fileID: 0}
   myShipUnit: {fileID: 0}
-  recenterProbe: {fileID: 0}
+  myXROrigin: {fileID: 0}
   HeadInput: {fileID: 0}
 --- !u!4 &1578071945
 Transform:
@@ -5633,7 +5633,7 @@ MonoBehaviour:
     type: 3}
   myCurrentShip: {fileID: 0}
   myShipUnit: {fileID: 0}
-  recenterProbe: {fileID: 0}
+  myXROrigin: {fileID: 0}
   HeadInput: {fileID: 0}
 --- !u!4 &1797585428
 Transform:
