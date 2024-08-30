@@ -330,7 +330,7 @@ MonoBehaviour:
   mount: {fileID: 3674200715978806703}
   scope: {fileID: 599911064401887090}
   accel: 50
-  maxSpeed: 20
+  maxSpeed: 30
   maxTurnspeed: 40
   keyBoardControlOn: 0
   targetVelocity: {x: 0, y: 0, z: 0}

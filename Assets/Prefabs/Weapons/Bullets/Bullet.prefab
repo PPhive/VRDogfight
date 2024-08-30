@@ -292,7 +292,7 @@ MonoBehaviour:
     damage: 10
     blastRadius: 0
     lifeTime: 1
-    initalforce: 100
+    initalforce: 200
     recoilX: 0
     recoilY: 0
   LockOnDamage: 34

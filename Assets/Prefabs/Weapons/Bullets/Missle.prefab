@@ -5254,7 +5254,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MyRigidBody: {fileID: 0}
   Target: {fileID: 0}
-  Speed: 30
+  Speed: 60
 --- !u!1 &6205312985222310972
 GameObject:
   m_ObjectHideFlags: 0
