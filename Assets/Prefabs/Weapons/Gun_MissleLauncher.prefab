@@ -6366,12 +6366,13 @@ MonoBehaviour:
     type: 3}
   MyMuzzle: {fileID: 5588808143549408791}
   BarrelOffset: {fileID: 5588808144238566814}
+  BarrelRetract: 5
   GunBlaze: {fileID: 5588808142980218052}
   MySound: {fileID: -5727425948808650125}
   Spread: 2
   Burst: 2
   BurstCD: 0.2
-  CooldownMax: 5
+  CooldownMax: 4
   Cooldown: 0
 --- !u!82 &-5727425948808650125
 AudioSource:

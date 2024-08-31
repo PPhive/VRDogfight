@@ -9,6 +9,7 @@ public class Gun : MonoBehaviour
         Left,
         Right,
         Mid,
+        Sub,
     }
     [SerializeField]
     public Slot MySlot;
@@ -16,30 +17,30 @@ public class Gun : MonoBehaviour
     [SerializeField]
     KeyCode FireButton = KeyCode.Space;
     [SerializeField]
-    Unit Owner;
+    protected Unit Owner;
     [SerializeField]
-    GameObject MyBullet;
+    protected GameObject MyBullet;
     [SerializeField]
-    GameObject MyMuzzle;
+    protected GameObject MyMuzzle;
     [SerializeField]
-    GameObject BarrelOffset;
+    protected GameObject BarrelOffset;
     [SerializeField]
-    ParticleSystem GunBlaze;
+    protected float BarrelRetract = 0;
     [SerializeField]
-    AudioSource MySound;
+    protected ParticleSystem GunBlaze;
     [SerializeField]
-    float Spread;
+    protected AudioSource MySound;
     [SerializeField]
-    int Burst = 1;
+    protected float Spread;
     [SerializeField]
-    float BurstCD = 0;
+    protected int Burst = 1;
+    [SerializeField]
+    protected float BurstCD = 0;
 
     [SerializeField]
-    private float CooldownMax;
+    protected float CooldownMax;
     [SerializeField]
-    private float Cooldown;
-
-    private IEnumerator Coroutine;
+    protected float Cooldown;
 
     void Start()
     {
@@ -58,6 +59,11 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
+        GunUpdate();
+    }
+
+    public virtual void GunUpdate() //Call this method per frame in update
+    {
         if (Cooldown > 0)
         {
             Cooldown -= Time.deltaTime;
@@ -65,11 +71,12 @@ public class Gun : MonoBehaviour
         MuzzleRecoil();
     }
 
-    public IEnumerator Fire(float delay) 
+    public IEnumerator Fire(float delay, GameObject bullet, GameObject muzzle,GameObject barrelOffset, ParticleSystem blaze
+        ) 
     {
         yield return new WaitForSeconds(delay);
-        MyMuzzle.transform.localEulerAngles = new Vector3(Random.Range(-Spread, Spread), Random.Range(-Spread, Spread), 0);
-        GameObject SpawnedBullet = Instantiate(MyBullet, MyMuzzle.transform.position, MyMuzzle.transform.rotation);
+        muzzle.transform.localEulerAngles = new Vector3(Random.Range(-Spread, Spread), Random.Range(-Spread, Spread), 0);
+        GameObject SpawnedBullet = Instantiate(bullet, muzzle.transform.position, muzzle.transform.rotation);
         SpawnedBullet.tag = tag;
         if (SpawnedBullet.GetComponent<Bullet>() != null)
         {
@@ -82,26 +89,33 @@ public class Gun : MonoBehaviour
                 SpawnedBullet.GetComponent<Bullet>().Owner = GameManager.instance.CurrentGame.teams[0].myPlayers[0];//This is the neutral player
             }
         }
-        BarrelOffset.transform.localPosition = -Vector3.forward * 1;
-        GunBlaze.Play();
+        barrelOffset.transform.localPosition -= Vector3.forward * 1;
+        blaze.Play();
         MySound.PlayOneShot(MySound.clip);
+        yield return null;
     }
 
     public void MuzzleRecoil() 
     {
         if (BarrelOffset.transform.localPosition.z < 0) 
         {
-            BarrelOffset.transform.localPosition += Vector3.forward * 10 * Time.deltaTime;
+            BarrelOffset.transform.localPosition += Vector3.forward * BarrelRetract * Time.deltaTime;
+            if (false && BarrelOffset.transform.localPosition.z > 0)
+            {
+                Debug.Log(BarrelOffset.transform.localPosition + " " + Vector3.forward * BarrelOffset.transform.localPosition.z);
+                BarrelOffset.transform.localPosition -= Vector3.forward * BarrelOffset.transform.localPosition.z;
+                Debug.Log(BarrelOffset.transform.localPosition);
+            }
         }
     }
 
-    public void FireAttempted() 
+    public virtual void FireAttempted() 
     {
         if (Cooldown <= 0)
         {
             for (int i = 0; i < Burst; i++)
             {
-                StartCoroutine(Fire(i * BurstCD));
+                StartCoroutine(Fire(i * BurstCD,MyBullet,MyMuzzle,BarrelOffset,GunBlaze));
             }
             Cooldown = CooldownMax;
         }
@@ -112,25 +126,6 @@ public class Gun : MonoBehaviour
         //Checking if weapon is one left or right and determine control based on that
         if (Owner != null)
         {
-            /*
-            Vector2 a = new Vector2(transform.position.x, transform.position.z);
-            Vector2 b = new Vector2(Owner.transform.position.x, Owner.transform.position.z);
-            Vector2 c = b + new Vector2(Owner.transform.forward.x, Owner.transform.forward.z);
-            float CrossProduct = Vector3.Cross(a - b, c - b).z;
-            if (CrossProduct > 0)
-            {
-                MySlot = Slot.Right;
-            }
-            else if (CrossProduct < 0)
-            {
-                MySlot = Slot.Left;
-            }
-            else
-            {
-                MySlot = Slot.Mid;
-            }
-            */
-
             if (transform.parent.name == "WeaponMountRight")
             {
                 MySlot = Slot.Right;
@@ -140,9 +135,13 @@ public class Gun : MonoBehaviour
             {
                 MySlot = Slot.Left;
             }
-            else
+            else if (transform.parent.name == "WeaponMountMid")
             {
                 MySlot = Slot.Mid;
+            }
+            else
+            {
+                MySlot = Slot.Sub;
             }
         }
     }

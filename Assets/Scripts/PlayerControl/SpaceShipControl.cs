@@ -90,9 +90,7 @@ public class SpaceShipControl : MonoBehaviour
             HeadInput.enabled = false;
             turn.x += Input.GetAxis("Mouse X");
             turn.y += Input.GetAxis("Mouse Y");
-            //turn.z += Input.GetAxis("Horizontal"); //This is qe or steering wheel, check keyboard manager
-            myCamera.transform.localRotation = Quaternion.Euler(-turn.y, turn.x, 0);
-            
+            myCamera.transform.localRotation = Quaternion.Euler(-turn.y, turn.x, 0);       
         }
         else 
         {
@@ -118,6 +116,7 @@ public class SpaceShipControl : MonoBehaviour
                 Vector2.Distance(new Vector2(myUnitfront.x, myUnitfront.z), new Vector2(MyUnit.transform.position.x, MyUnit.transform.position.z))
                 ) / -3.14f * 180;
 
+            /*
             //if the pitch is too high or low, slowly disable pitching
             if (Mathf.Abs(globalpitch) >= 30f)
             {
@@ -127,29 +126,35 @@ public class SpaceShipControl : MonoBehaviour
                     myJoystick.localEulerAngles -= Vector3.right * Methods.i.Bound180(myJoystick.localEulerAngles.x) * ((Mathf.Abs(globalpitch) - 30) / 20);
                 }     
             }
+            */
 
             //Automatically rolling the ship back upright
-            if (Methods.i.Bound180(MyUnit.transform.localEulerAngles.z) != 0) 
+            if (Mathf.Abs(globalpitch) <= 80f) 
             {
-                float unitZ = Methods.i.Bound180(MyUnit.transform.localEulerAngles.z);
-                float unitZSign = 0;
-                if (unitZ != 0) 
+                if (Methods.i.Bound180(MyUnit.transform.localEulerAngles.z) != 0)
                 {
-                    unitZSign = unitZ / Mathf.Abs(unitZ);
-                }
+                    float unitZ = Methods.i.Bound180(MyUnit.transform.localEulerAngles.z);
+                    float unitZSign = 0;
+                    if (unitZ != 0)
+                    {
+                        unitZSign = unitZ / Mathf.Abs(unitZ);
+                    }
 
-                myJoystick.localEulerAngles = new Vector3(
-                    myJoystick.localEulerAngles.x,
-                    myJoystick.localEulerAngles.y,
-                    -unitZ * 0.5f
-                    );
+                    myJoystick.localEulerAngles = new Vector3(
+                        myJoystick.localEulerAngles.x,
+                        myJoystick.localEulerAngles.y,
+                        -unitZ * 0.4f
+                        );
+                }
             }
         }
 
         //Passing the turn data to Unit
         MyUnit.JoystickRotate(myJoystick, gameObject.transform, MyModel.transform, new Vector3(0, 0, 0), turnMultiplier);
 
+        /*
         //Roll the player object back to reduce motion sickness
         myCamera.transform.parent.transform.parent.transform.localEulerAngles = Vector3.forward * Methods.i.Bound180(MyModel.transform.localEulerAngles.z) * (-0.2f);
-    }
+        */
+        }
 }

@@ -60,7 +60,7 @@ public class Missle : MonoBehaviour
                 TurnRandomizer *= Mathf.Clamp(Distance / 200, 5, 30);
                 transform.Rotate(TurnRandomizer, Space.Self);
 
-                TurnTimer += Random.Range(0.1f, 0.6f);
+                TurnTimer += Random.Range(0.1f, 0.4f);
             }
             TargetPastPos = Target.transform.position;
         }
