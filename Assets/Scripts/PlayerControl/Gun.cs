@@ -25,6 +25,8 @@ public class Gun : MonoBehaviour
     [SerializeField]
     protected GameObject BarrelOffset;
     [SerializeField]
+    protected float BarrelRecoilDist = 1;
+    [SerializeField]
     protected float BarrelRetract = 0;
     [SerializeField]
     protected ParticleSystem GunBlaze;
@@ -89,7 +91,8 @@ public class Gun : MonoBehaviour
                 SpawnedBullet.GetComponent<Bullet>().Owner = GameManager.instance.CurrentGame.teams[0].myPlayers[0];//This is the neutral player
             }
         }
-        barrelOffset.transform.localPosition -= Vector3.forward * 1;
+        barrelOffset.transform.localPosition -= Vector3.forward * BarrelRecoilDist;
+        Debug.Log(Vector3.forward * BarrelRecoilDist);
         blaze.Play();
         MySound.PlayOneShot(MySound.clip);
         yield return null;

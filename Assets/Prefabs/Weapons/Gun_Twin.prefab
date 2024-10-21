@@ -5638,6 +5638,7 @@ MonoBehaviour:
     type: 3}
   MyMuzzle: {fileID: 7267194644656182481}
   BarrelOffset: {fileID: 7267194644003204952}
+  BarrelRecoilDist: 1
   BarrelRetract: 10
   GunBlaze: {fileID: 7267194645227867650}
   MySound: {fileID: 7666780978474951273}
