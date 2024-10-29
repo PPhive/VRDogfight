@@ -5,7 +5,8 @@ using UnityEngine;
 public class WindSystem : MonoBehaviour
 {
     [SerializeField]
-    Rigidbody MyRB;
+    Player player;
+    public Rigidbody MyRB;
     [SerializeField]
     ParticleSystem MyEmitter;
 
@@ -21,8 +22,7 @@ public class WindSystem : MonoBehaviour
 
     private void Start()
     {
-        //StartCoroutine(UpdateAngle());
-        //StartCoroutine(UpdateAngle());
+        
     }
 
     private void Update()
@@ -45,15 +45,4 @@ public class WindSystem : MonoBehaviour
             yield return new WaitForSeconds(0.01f);
         }
     }
-
-    public void PitchWithShip() 
-    {
-        
-    }
-
-    public void YawWithShip() 
-    {
-    
-    }
-
 }

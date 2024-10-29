@@ -56,12 +56,7 @@ public class Player : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Mount Attempted");
-                    float randomAngle = Random.Range(0f, 6.28f);
-                    Vector3 UnitCircle = new Vector3(Mathf.Sin(randomAngle), 0, Mathf.Cos(randomAngle));
-                    transform.position = GameManager.instance.WorldRadius * 1.2f * UnitCircle;
-                    transform.LookAt(new Vector3());
-                    Mount();
+                    respawn();
                 }
             }
 
@@ -175,5 +170,15 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(Time.deltaTime);
         Recenter();
         yield break;
+    }
+
+    public void respawn() 
+    {
+        Debug.Log("Mount Attempted");
+        float randomAngle = Random.Range(0f, 6.28f);
+        Vector3 UnitCircle = new Vector3(Mathf.Sin(randomAngle), 0, Mathf.Cos(randomAngle));
+        transform.position = GameManager.instance.WorldRadius * 1.2f * UnitCircle;
+        transform.LookAt(new Vector3());
+        Mount();
     }
 }

@@ -9,8 +9,8 @@ EditorBuildSettings:
     path: Assets/Scenes/Title.unity
     guid: c4bb52909683ad642865d49c0673f790
   - enabled: 1
-    path: Assets/Scenes/DogFight.unity
-    guid: 340b0afe17a7d4940a184e9946d95396
+    path: Assets/Scenes/DogFightCity.unity
+    guid: f364595a611e76c40af94f0ef436b426
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: bfa1182bd221b4ca89619141f66f1260,
       type: 2}

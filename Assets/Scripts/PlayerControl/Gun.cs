@@ -102,13 +102,12 @@ public class Gun : MonoBehaviour
     {
         if (BarrelOffset.transform.localPosition.z < 0) 
         {
-            BarrelOffset.transform.localPosition += Vector3.forward * BarrelRetract * Time.deltaTime;
-            if (false && BarrelOffset.transform.localPosition.z > 0)
+            Vector3 CurrentOffset = BarrelOffset.transform.localPosition + Vector3.forward * BarrelRetract * Time.deltaTime;
+            if (CurrentOffset.z > 0)
             {
-                Debug.Log(BarrelOffset.transform.localPosition + " " + Vector3.forward * BarrelOffset.transform.localPosition.z);
-                BarrelOffset.transform.localPosition -= Vector3.forward * BarrelOffset.transform.localPosition.z;
-                Debug.Log(BarrelOffset.transform.localPosition);
+                CurrentOffset.z = 0;
             }
+            BarrelOffset.transform.localPosition = CurrentOffset;
         }
     }
 
